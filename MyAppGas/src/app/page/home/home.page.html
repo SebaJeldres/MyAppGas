@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <h1>Bienvenido, {{ username }}!</h1>
+
+  <!-- Card que muestra la información del usuario -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Información del Usuario</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p><strong>Nombre de Usuario:</strong> {{ username }}</p>
+      <p><strong>Rol:</strong> {{ rol }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+

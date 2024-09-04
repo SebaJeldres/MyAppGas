@@ -1,0 +1,7 @@
+{
+  "name": "MyAppGas",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
