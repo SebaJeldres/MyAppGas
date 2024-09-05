@@ -14,7 +14,11 @@ export class LoginPage implements OnInit {
   userLogin: Users = {
     username: "",
     password: "",
-    rol: ""
+    rol: "",
+    Nombre: "",
+    apellido: "",
+    Correo: "",
+    NumTelefonico: ""
   };
 
   constructor(private _userLogin: LoginUsersService, private router: Router) { }
@@ -23,13 +27,18 @@ export class LoginPage implements OnInit {
 
   login(userLogin: Users) {
     console.log(userLogin);
-    const user = this._userLogin.encontrar_usuario(userLogin);
+    const user = this._userLogin.encontrar_usuario(userLogin); // Buscar usuario
     if (user) {
       console.info("Usuario encontrado");
+      // Navegar a la página 'home' y pasar el estado (datos del usuario)
       this.router.navigate(['home'], {
         state: {
-          x: user.username,
-          rol: user.rol // Pasar el rol del usuario
+          x: user.username,  // Pasar el username
+          rol: user.rol,     // Pasar el rol del usuario
+          nombre: user.Nombre,  // Pasar el nombre
+          apellido: user.apellido, // Pasar el apellido
+          correo: user.Correo,  // Pasar el correo
+          numTelefonico: user.NumTelefonico // Pasar el número telefónico
         }
       });
     } else {

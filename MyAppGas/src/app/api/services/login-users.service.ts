@@ -8,19 +8,31 @@ export class LoginUsersService {
 
   lista_de_usuarios: Users[] = [
     {
-      username: "Dario",
+      username: "Dario_user",
       password: "Dario1",
-      rol: "usuario"
+      rol: "usuario",
+      Nombre: "Dario ",
+      apellido: "Osorio",
+      Correo: "Dario.osorio@gmail.com",
+      NumTelefonico: "+56 9 0786 4635"
     },
     {
-      username: "Jose",
+      username: "Jose_Repartidor",
       password: "Jose1",
-      rol: "Repartidor"
+      rol: "Repartidor",
+      Nombre: "Jose",
+      apellido: "Gonzales",
+      Correo: "Jose.gonzales@gmail.com",
+      NumTelefonico: "+56 9 6353 4477"
     },
     {
-      username: "Carlos",
+      username: "Carlos_admin",
       password: "Carlos1",
-      rol: "Admin Distr."
+      rol: "Distribuidora",
+      Nombre: "Carlos",
+      apellido: "Dominguez",
+      Correo: "Carlos.dominguez@gmail.com",
+      NumTelefonico: "+56 8898 9000"
     }
   ];
 
