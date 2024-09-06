@@ -1,10 +1,52 @@
 <ion-header>
   <ion-toolbar>
+    <!-- Botón del menú deslizante -->
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Home</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<!-- Menú deslizante -->
+<ion-menu content-id="main-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menú</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <!-- Opciones para el rol "usuario" -->
+      <ion-item *ngIf="rol === 'usuario'">
+        <ion-label>Perfil</ion-label>
+      </ion-item>
+      <ion-item *ngIf="rol === 'usuario'">
+        <ion-label>Historial de Compras</ion-label>
+      </ion-item>
+
+      <!-- Opciones para el rol "repartidor" -->
+      <ion-item *ngIf="rol === 'Repartidor'">
+        <ion-label>Pedidos Actuales</ion-label>
+      </ion-item>
+      <ion-item *ngIf="rol === 'Repartidor'">
+        <ion-label>Rutas de Entrega</ion-label>
+      </ion-item>
+
+      <!-- Opciones para el rol "distribuidora" -->
+      <ion-item *ngIf="rol === 'Distribuidora'">
+        <ion-label>Inventario</ion-label>
+      </ion-item>
+      <ion-item *ngIf="rol === 'Distribuidora'">
+        <ion-label>Solicitudes de Pedido</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<!-- Contenido principal -->
+<ion-content id="main-content" padding>
   <h1>Bienvenido, {{ username }}!</h1>
 
   <!-- Card que muestra la información del usuario -->
@@ -15,8 +57,8 @@
 
     <ion-card-content>
       <p><strong>Nombre:</strong> {{ Nombre }} {{ apellido }} </p>
-      <p><strong>Correoo:</strong> {{ Correo }}</p>
-      <p><strong>Numero Telefonico:</strong> {{ NumTelefonico }}</p>
+      <p><strong>Correo:</strong> {{ Correo }}</p>
+      <p><strong>Número Telefónico:</strong> {{ NumTelefonico }}</p>
       <p><strong>Usuario:</strong> {{ username }}</p>
       <p><strong>Rol:</strong> {{ rol }}</p>
     </ion-card-content>
