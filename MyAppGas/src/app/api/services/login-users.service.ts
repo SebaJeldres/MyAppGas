@@ -6,64 +6,46 @@ import * as CryptoJS from 'crypto-js';
   providedIn: 'root',
 })
 export class LoginUsersService {
-  private secretKey = 'My1RaAp9M081L'; //"llave de la encryptacion"
+  private secretKey = 'My1RaAp9M081L'; // Llave de encriptación
 
-  lista_de_usuarios: Users[] = [
-    {
-<<<<<<< HEAD
-      username: 'Dario',
-      password: this.encryptPassword('Dario1'),
-      rol: 'usuario',
-    },
-    {
-      username: 'Jose',
-      password: this.encryptPassword('Jose1'),
-      rol: 'Repartidor',
-    },
-    {
-      username: 'Carlos',
-      password: this.encryptPassword('Carlos1'),
-      rol: 'Admin Distr.',
-    },
-=======
-      username: "Dario_user",
-      password: "Dario1",
-      rol: "usuario",
-      Nombre: "Dario ",
-      apellido: "Osorio",
-      Correo: "Dario.osorio@gmail.com",
-      NumTelefonico: "+56 9 0786 4635"
-    },
-    {
-      username: "Jose_Repartidor",
-      password: "Jose1",
-      rol: "Repartidor",
-      Nombre: "Jose",
-      apellido: "Gonzales",
-      Correo: "Jose.gonzales@gmail.com",
-      NumTelefonico: "+56 9 6353 4477"
-    },
-    {
-      username: "Carlos_admin",
-      password: "Carlos1",
-      rol: "Distribuidora",
-      Nombre: "Carlos",
-      apellido: "Dominguez",
-      Correo: "Carlos.dominguez@gmail.com",
-      NumTelefonico: "+56 8898 9000"
-    }
->>>>>>> 00872833bba05eee399e9b3a772f3b5bd22212ba
-  ];
+  lista_de_usuarios: Users[] = [];
 
-  constructor() {}
+  constructor() {
+    this.lista_de_usuarios = [
+      {
+        username: "Dario_user",
+        password: this.encryptPassword('Dario1'),
+        rol: "usuario",
+        Nombre: "Dario",
+        apellido: "Osorio",
+        Correo: "Dario.osorio@gmail.com",
+        NumTelefonico: "+56 9 0786 4635"
+      },
+      {
+        username: "Jose_Repartidor",
+        password: this.encryptPassword('Jose1'),
+        rol: "Repartidor",
+        Nombre: "Jose",
+        apellido: "Gonzales",
+        Correo: "Jose.gonzales@gmail.com",
+        NumTelefonico: "+56 9 6353 4477"
+      },
+      {
+        username: "Carlos_admin",
+        password: this.encryptPassword('Carlos1'),
+        rol: "Distribuidora",
+        Nombre: "Carlos",
+        apellido: "Dominguez",
+        Correo: "Carlos.dominguez@gmail.com",
+        NumTelefonico: "+56 8898 9000"
+      }
+    ];
+  }
 
   // Método para cifrar la contraseña
   private encryptPassword(password: string): string {
     console.log('Texto original antes de encriptar:', password);
-    const encryptedPassword = CryptoJS.AES.encrypt(
-      password,
-      this.secretKey
-    ).toString();
+    const encryptedPassword = CryptoJS.AES.encrypt(password, this.secretKey).toString();
     console.log('Texto encriptado:', encryptedPassword);
     return encryptedPassword;
   }
@@ -78,15 +60,15 @@ export class LoginUsersService {
   }
 
   encontrar_usuario(userInfo: Users): Users | null {
-    for (let i = 0; i < this.lista_de_usuarios.length; i++) {
+    for (let usuario of this.lista_de_usuarios) {
       if (
-        this.lista_de_usuarios[i].username === userInfo.username &&
-        this.decryptPassword(this.lista_de_usuarios[i].password) ===
-          userInfo.password
+        usuario.username === userInfo.username &&
+        this.decryptPassword(usuario.password) === userInfo.password
       ) {
-        return this.lista_de_usuarios[i]; // Devuelve el objeto del usuario encontrado
+        return usuario; // Devuelve el objeto del usuario encontrado
       }
     }
     return null; // Devuelve null si no se encuentra el usuario
   }
 }
+
