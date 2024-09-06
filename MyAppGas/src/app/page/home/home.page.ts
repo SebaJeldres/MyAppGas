@@ -11,6 +11,10 @@ export class HomePage implements OnInit {
 
   username: string | null = null;
   rol: string | null = null;
+  Nombre: string | null = null
+  apellido: string | null = null
+  Correo: string | null = null
+  NumTelefonico: string | null = null
 
   constructor(private router: Router) { }
 
@@ -19,9 +23,11 @@ export class HomePage implements OnInit {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
       this.username = navigation.extras.state['x'];
-      // Si el rol también se pasa como estado, recupéralo aquí
-      this.rol = navigation.extras.state['rol'] || 'No definido'; // Cambia 'No definido' por un valor predeterminado adecuado
+      this.rol = navigation.extras.state['rol'] || 'No definido';
+      this.Nombre = navigation.extras.state['nombre'] || '';
+      this.apellido = navigation.extras.state['apellido'] || '';
+      this.Correo = navigation.extras.state['correo'] || '';
+      this.NumTelefonico = navigation.extras.state['numTelefonico'] || '';
     }
   }
 }
-

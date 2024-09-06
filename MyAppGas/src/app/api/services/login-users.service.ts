@@ -10,6 +10,7 @@ export class LoginUsersService {
 
   lista_de_usuarios: Users[] = [
     {
+<<<<<<< HEAD
       username: 'Dario',
       password: this.encryptPassword('Dario1'),
       rol: 'usuario',
@@ -24,6 +25,34 @@ export class LoginUsersService {
       password: this.encryptPassword('Carlos1'),
       rol: 'Admin Distr.',
     },
+=======
+      username: "Dario_user",
+      password: "Dario1",
+      rol: "usuario",
+      Nombre: "Dario ",
+      apellido: "Osorio",
+      Correo: "Dario.osorio@gmail.com",
+      NumTelefonico: "+56 9 0786 4635"
+    },
+    {
+      username: "Jose_Repartidor",
+      password: "Jose1",
+      rol: "Repartidor",
+      Nombre: "Jose",
+      apellido: "Gonzales",
+      Correo: "Jose.gonzales@gmail.com",
+      NumTelefonico: "+56 9 6353 4477"
+    },
+    {
+      username: "Carlos_admin",
+      password: "Carlos1",
+      rol: "Distribuidora",
+      Nombre: "Carlos",
+      apellido: "Dominguez",
+      Correo: "Carlos.dominguez@gmail.com",
+      NumTelefonico: "+56 8898 9000"
+    }
+>>>>>>> 00872833bba05eee399e9b3a772f3b5bd22212ba
   ];
 
   constructor() {}
