@@ -15,7 +15,8 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./page/home/home.module').then( m => m.HomePageModule)
-  },  {
+  },
+  {
     path: 'historial-pedidos',
     loadChildren: () => import('./page/pages-usuario/historial-pedidos/historial-pedidos.module').then( m => m.HistorialPedidosPageModule)
   },
@@ -44,7 +45,7 @@ const routes: Routes = [
     loadChildren: () => import('./page/pages-distribuidora/gestionar-productos/gestionar-productos.module').then( m => m.GestionarProductosPageModule)
   },
   {
-    path: 'historial-pedidos',
+    path: 'historial-ventas',
     loadChildren: () => import('./page/pages-distribuidora/historial-pedidos/historial-pedidos.module').then( m => m.HistorialPedidosPageModule)
   },
   {
