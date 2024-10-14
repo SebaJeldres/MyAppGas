@@ -35,3 +35,21 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+// Variables globales de colores
+$gris-ceniza: #cad2c5;
+$verde-mar-oscuro: #84a98c;
+$pizarra-oscura: #52796f;
+$pizarra-profunda: #354f52;
+$verde-carbon: #2f3e46;
+
+ion-content {
+    --background: #52796f;
+  }
+
+ion-toolbar{
+    --background:#354f52;
+    border-radius: 2px;
+    border-color: black;
+}
+

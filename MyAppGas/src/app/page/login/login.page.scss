@@ -1,0 +1,30 @@
+.contenedor_body {
+    margin: 30px;
+    margin-top: 220px;
+    border: 1px solid black;
+    border-radius: 14px;
+    background-color: #cad2c5;
+}
+
+.contenedor_login {
+    background-color: #cad2c5;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.contenedor_login ion-input {
+    background: #cad2c5;
+    color: black;
+    margin-bottom: 15px;
+    --highlight-color: black;
+    
+
+}
+
+.contenedor_login ion-button {
+    --background: #52796f;
+    color: #cad2c5;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 25px;
+}

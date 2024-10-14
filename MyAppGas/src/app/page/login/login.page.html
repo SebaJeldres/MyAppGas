@@ -11,17 +11,25 @@
     </ion-toolbar>
   </ion-header>
 
+  <div class="contenedor_body"> <!-- Contenedor principal -->
+    <div class="contenedor_login"> <!-- Contenedor específico para el login -->
+      <ion-input 
+        [(ngModel)]="userLogin.username" 
+        label="Usuario" 
+        labelPlacement="floating" 
+        placeholder="Enter text">
+      </ion-input>
 
-  <ion-list>
-    <ion-item>
-      <ion-input [(ngModel)]="userLogin.username" label="username" labelPlacement="floating" placeholder="Enter text"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input [(ngModel)]="userLogin.password" type="password" label="Password" value="1234">
+      <ion-input 
+        [(ngModel)]="userLogin.password" 
+        type="password" 
+        label="Contraseña" 
+        value="1234">
         <ion-input-password-toggle slot="end"></ion-input-password-toggle>
       </ion-input>
 
-      <ion-button (click)="login(userLogin)">login-</ion-button>
-    </ion-item>
-  </ion-list>
+      <ion-button (click)="login(userLogin)" expand="full">login</ion-button> <!-- Botón centrado -->
+    </div>
+  </div>
 </ion-content>
+
