@@ -19,7 +19,8 @@ export class LoginUsersService {
         Nombre: "Dario",
         apellido: "Osorio",
         Correo: "Dario.osorio@gmail.com",
-        NumTelefonico: "+56 9 0786 4635"
+        NumTelefonico: "+56 9 0786 4635",
+        Direccion: "Belloto norte, las parcelas, 555"
       },
       {
         username: "Jose_Repartidor",
@@ -28,7 +29,8 @@ export class LoginUsersService {
         Nombre: "Jose",
         apellido: "Gonzales",
         Correo: "Jose.gonzales@gmail.com",
-        NumTelefonico: "+56 9 6353 4477"
+        NumTelefonico: "+56 9 6353 4477",
+        Direccion: "Belloto norte, las parcelas, 555"
       },
       {
         username: "Carlos_admin",
@@ -37,7 +39,8 @@ export class LoginUsersService {
         Nombre: "Carlos",
         apellido: "Dominguez",
         Correo: "Carlos.dominguez@gmail.com",
-        NumTelefonico: "+56 8898 9000"
+        NumTelefonico: "+56 8898 9000",
+        Direccion: "Belloto norte, las parcelas, 555"
       }
     ];
   }

@@ -15,6 +15,7 @@ export class HomePage implements OnInit {
   apellido: string | null = null
   Correo: string | null = null
   NumTelefonico: string | null = null
+  Direccion: string | null = null
 
   constructor(private router: Router) { }
 
@@ -28,6 +29,7 @@ export class HomePage implements OnInit {
       this.apellido = navigation.extras.state['apellido'] || '';
       this.Correo = navigation.extras.state['correo'] || '';
       this.NumTelefonico = navigation.extras.state['numTelefonico'] || '';
+      this.Direccion = navigation.extras.state['Direccion'] || '';
     }
   }
 }

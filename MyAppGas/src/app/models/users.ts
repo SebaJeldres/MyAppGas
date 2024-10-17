@@ -6,5 +6,6 @@ export interface Users{
     apellido: string;
     Correo: string;
     NumTelefonico: string;
+    Direccion: string;
 
 }

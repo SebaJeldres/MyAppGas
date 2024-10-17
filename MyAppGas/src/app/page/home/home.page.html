@@ -9,7 +9,7 @@
 </ion-header>
 
 <!-- Menú deslizante -->
-<ion-menu content-id="main-content">
+<ion-menu class="contenedor_menu" content-id="main-content">
   <ion-header>
     <ion-toolbar color="primary">
       <ion-title>Menú</ion-title>
@@ -19,7 +19,7 @@
   <ion-content>
     <ion-list>
       <!-- Opciones para el rol "usuario" -->
-      <ion-item *ngIf="rol === 'usuario'">
+      <ion-item  *ngIf="rol === 'usuario'">
         <ion-button [routerLink]="['/cuenta-usuario']">Perfil</ion-button>
       </ion-item>
       <ion-item *ngIf="rol === 'usuario'">
@@ -70,10 +70,27 @@
     <ion-card-content>
       <p><strong>Nombre:</strong> {{ Nombre }} {{ apellido }} </p>
       <p><strong>Correo:</strong> {{ Correo }}</p>
-      <p><strong>Número Telefónico:</strong> {{ NumTelefonico }}</p>
-      <p><strong>Usuario:</strong> {{ username }}</p>
-      <p><strong>Rol:</strong> {{ rol }}</p>
+      <p><strong>Direccion:</strong>{{Direccion}}</p>
     </ion-card-content>
   </ion-card>
+
+  <br>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Ultimo pedido</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p><strong>Fecha:</strong> </p>
+      <p><strong>Hora</strong> </p>
+      <p><strong>Datos Repartidor:</strong> </p>
+      <p><strong>Distribuidora:</strong> </p>
+      <p><strong>Monto total:</strong> </p>
+      <p><strong>Direccion:</strong></p>
+      <p><ion-button>Repetir pedido</ion-button> </p>
+    </ion-card-content>
+  </ion-card>
+
+
 </ion-content>
 

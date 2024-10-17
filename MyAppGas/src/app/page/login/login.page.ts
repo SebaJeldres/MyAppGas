@@ -18,7 +18,8 @@ export class LoginPage implements OnInit {
     Nombre: "",
     apellido: "",
     Correo: "",
-    NumTelefonico: ""
+    NumTelefonico: "",
+    Direccion: ""
   };
 
   constructor(private _userLogin: LoginUsersService, private router: Router) { }
@@ -38,7 +39,8 @@ export class LoginPage implements OnInit {
           nombre: user.Nombre,  // Pasar el nombre
           apellido: user.apellido, // Pasar el apellido
           correo: user.Correo,  // Pasar el correo
-          numTelefonico: user.NumTelefonico // Pasar el número telefónico
+          numTelefonico: user.NumTelefonico, // Pasar el número telefónico
+          Direccion: user.Direccion
         }
       });
     } else {
