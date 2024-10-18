@@ -75,7 +75,7 @@
   </ion-card>
 
   <br>
-  <ion-card>
+  <ion-card *ngIf="rol === 'usuario'">
     <ion-card-header>
       <ion-card-title>Ultimo pedido</ion-card-title>
     </ion-card-header>
