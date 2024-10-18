@@ -11,13 +11,13 @@
 <!-- Menú deslizante -->
 <ion-menu class="contenedor_menu" content-id="main-content">
   <ion-header>
-    <ion-toolbar color="primary">
+    <ion-toolbar style="--background:#354f52 ; --color: #cad2c5;">
       <ion-title>Menú</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-content>
-    <ion-list>
+  <ion-content style="--background:#52796f ; --color:#354f52 ;">
+    <ion-list style="--ion-item-background:#52796f  ;">
       <!-- Opciones para el rol "usuario" -->
       <ion-item  *ngIf="rol === 'usuario'">
         <ion-button [routerLink]="['/cuenta-usuario']">Perfil</ion-button>
