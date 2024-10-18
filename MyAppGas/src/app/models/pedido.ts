@@ -1,4 +1,4 @@
-export interface Solicitud {
+export interface Pedido {
     
     id: string;
     nombre_usuario: string;

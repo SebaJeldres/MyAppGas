@@ -1,13 +1,33 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>cuenta-repartidor</ion-title>
+    <ion-title>Perfil Repartidor</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">cuenta-repartidor</ion-title>
+      <ion-title size="large">Perfil</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div class="contenedor_body">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Información del Repartidor</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p><strong>Nombre:</strong> {{ nombre }} {{ apellido }}</p>
+        <p><strong>Correo:</strong> {{ correo }}</p>
+        <p><strong>Número Telefónico:</strong> {{ numTelefonico }}</p>
+        <p><strong>Dirección:</strong> {{ direccion }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
+
+
+
+
+

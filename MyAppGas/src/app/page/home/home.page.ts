@@ -32,4 +32,49 @@ export class HomePage implements OnInit {
       this.Direccion = navigation.extras.state['Direccion'] || '';
     }
   }
+
+  // Método para navegar a la página de perfil de usuario
+  irAPerfilUser() {
+    this.router.navigate(['cuenta-usuario'], {
+      state: {
+        username: this.username,
+        rol: this.rol,
+        nombre: this.Nombre,
+        apellido: this.apellido,
+        correo: this.Correo,
+        numTelefonico: this.NumTelefonico,
+        Direccion: this.Direccion
+      }
+    });
+  }
+
+  irAPerfilRepartidor() {
+    this.router.navigate(['cuenta-repartidor'], {
+      state: {
+        username: this.username,
+        rol: this.rol,
+        nombre: this.Nombre,
+        apellido: this.apellido,
+        correo: this.Correo,
+        numTelefonico: this.NumTelefonico,
+        Direccion: this.Direccion
+      }
+    });
+  }
+
+  irAPerfilDistribuidora() {
+    this.router.navigate(['cuenta-distribuidora'], {
+      state: {
+        username: this.username,
+        rol: this.rol,
+        nombre: this.Nombre,
+        apellido: this.apellido,
+        correo: this.Correo,
+        numTelefonico: this.NumTelefonico,
+        Direccion: this.Direccion
+      }
+    });
+  }
 }
+
+
