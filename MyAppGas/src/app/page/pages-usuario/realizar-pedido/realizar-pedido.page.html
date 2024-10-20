@@ -1,67 +1,34 @@
-<!-- Contenedor específico para el login <ion-header [translucent]="true">
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button default-href="#"></ion-back-button>
     </ion-buttons>
-    <ion-title>Lista de Productos</ion-title>
-    <ion-buttons slot="end">
-      <ion-button id="open-modal"> Agregar </ion-button>
-    </ion-buttons>
+    <ion-title>Realizar Pedido</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list *ngIf="productos.length > 0; else listaVacia">
+  <!-- Listar los productos obtenidos -->
+  <ion-list>
     <ion-item *ngFor="let producto of productos">
-      <ion-label>{{producto.name}}</ion-label>
+      <ion-label>{{ producto.nombre }} - ${{ producto.precio }}</ion-label>
+      <ion-input
+        type="number"
+        [(ngModel)]="producto.cantidad"
+        placeholder="Cantidad"
+        (ionChange)="calcularTotal()"
+      ></ion-input>
     </ion-item>
   </ion-list>
 
-  <ng-template #listaVacia>
-    <ion-item lines="none">
-      <ion-label class="ion-text-center">
-        <ion-text color="medium">
-          <h2>No hay productos disponibles.</h2>
-        </ion-text>
-      </ion-label>
-    </ion-item>
-  </ng-template>
-  
-  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button (click)="cancelar()">Cancelar</ion-button>
-          </ion-buttons>
-          <ion-title>Nuevo Producto</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="agregarProducto(nuevo_producto)" [strong]="true">Agregar</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding">
-        <ion-item>
-          <ion-input label="sku" type="text" placeholder="sku" [(ngModel)]="nuevo_producto.sku"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="name" type="text" placeholder="name" [(ngModel)]="nuevo_producto.name"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="stock" type="text" placeholder="stock" [(ngModel)]="nuevo_producto.stock"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="price" type="text" placeholder="price" [(ngModel)]="nuevo_producto.price"></ion-input>
-        </ion-item>
+  <!-- Mostrar el total del pedido -->
+  <ion-item>
+    <ion-label>Total: </ion-label>
+    <ion-text>${{ total }}</ion-text>
+  </ion-item>
 
-        <ion-item>
-          <ion-select label="Compañia" [(ngModel)]="nuevo_producto.compania" placeholder="Compañia">
-            <ion-select-option *ngFor="let compania of companias"
-              [value]="compania.id">{{compania.nombre}}</ion-select-option>
-          </ion-select>
-        </ion-item>
-
-      </ion-content>
-    </ng-template>
-  </ion-modal>
-</ion-content>-->
+  <!-- Botón para realizar el pedido -->
+  <ion-button expand="block" (click)="realizarPedido()"
+    >Realizar Pedido</ion-button
+  >
+</ion-content>
