@@ -20,7 +20,7 @@
     <ion-list style="--ion-item-background:#52796f  ;">
       <!-- Opciones para el rol "usuario" -->
       <ion-item  *ngIf="rol === 'usuario'">
-        <ion-button [routerLink]="['/cuenta-usuario']">Perfil</ion-button>
+        <ion-button (click)="irAPerfilUser()"  [routerLink]="['/cuenta-usuario']">Perfil</ion-button>
       </ion-item>
       <ion-item *ngIf="rol === 'usuario'">
         <ion-button [routerLink]="['/historial-pedidos']">Historial Compras</ion-button>
@@ -31,7 +31,7 @@
 
       <!-- Opciones para el rol "repartidor" -->
       <ion-item *ngIf="rol === 'Repartidor'">
-        <ion-button [routerLink]="['/cuenta-repartidor']">Perfil</ion-button>
+        <ion-button (click)="irAPerfilRepartidor()" [routerLink]="['/cuenta-repartidor']">Perfil</ion-button>
       </ion-item>
       <ion-item *ngIf="rol === 'Repartidor'">
         <ion-button [routerLink]="['/informacion-vehiculo']">Informacion Vehiculo</ion-button>
@@ -42,7 +42,7 @@
 
       <!-- Opciones para el rol "distribuidora" -->
       <ion-item *ngIf="rol === 'Distribuidora'">
-        <ion-button [routerLink]="['/cuenta-distribuidora']">Info Distribuidora</ion-button>
+        <ion-button (click)="irAPerfilDistribuidora()" [routerLink]="['/cuenta-distribuidora']">Info Distribuidora</ion-button>
       </ion-item>
       <ion-item *ngIf="rol === 'Distribuidora'">
         <ion-button [routerLink]="['/gestionar-productos']">Gestionar productos</ion-button>

@@ -1,13 +1,32 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>cuenta-usuario</ion-title>
+    <ion-title>Perfil de Usuario</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">cuenta-usuario</ion-title>
+      <ion-title size="large">Perfil</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div class="contenedor_body">
+    
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Información del Usuario</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p><strong>Nombre:</strong> {{ nombre }} {{ apellido }}</p>
+        <p><strong>Correo:</strong> {{ correo }}</p>
+        <p><strong>Número Telefónico:</strong> {{ numTelefonico }}</p>
+        <p><strong>Dirección:</strong> {{ direccion }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
+
+
