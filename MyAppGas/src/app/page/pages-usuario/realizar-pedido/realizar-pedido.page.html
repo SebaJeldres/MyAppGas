@@ -1,16 +1,16 @@
-<!-- Contenedor específico para el login <ion-header [translucent]="true">
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button default-href="#"></ion-back-button>
     </ion-buttons>
-    <ion-title>Lista de Productos</ion-title>
+    <ion-title>Pedidos</ion-title>
     <ion-buttons slot="end">
-      <ion-button id="open-modal"> Agregar </ion-button>
+      <ion-button id="open-modal"> Realizar pedido </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<!--<ion-content [fullscreen]="true">
   <ion-list *ngIf="productos.length > 0; else listaVacia">
     <ion-item *ngFor="let producto of productos">
       <ion-label>{{producto.name}}</ion-label>

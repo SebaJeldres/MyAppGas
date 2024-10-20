@@ -1,13 +1,9 @@
-import { Compania } from "./compania";
-
-export interface producto{
-    id: number;
+export interface CrearProducto{
     sku: number | null;
     nombre: string;
-    compania: Compania | null;
+    compania: string;
     tipo: string;
     kilos: number | null;
     precio: number | null;
     stock: number | null;
-    deleted_at: Date;
-}
+    }
