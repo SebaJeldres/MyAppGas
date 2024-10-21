@@ -38,14 +38,15 @@ export class GestionarProductosPage implements OnInit {
 
   async ngOnInit() {
     try {
-      await this.obtenerProductos(); // Agregado await aquí para asegurar que se obtienen los productos
-      this.companias = await firstValueFrom(this._serviceCompania.obtener_companias()); // Asegúrate de que esto devuelva un Observable
+      await this.obtenerProductos(); // Asegurado que se obtienen los productos
+      this.companias = this._serviceCompania.obtener_companias(); // Asignando las compañias
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         console.error("Error en Autenticación:", error.status);
       }
     }
   }
+  
 
   cancelar() {
     this.modal.dismiss(null, 'cancel');
@@ -60,7 +61,7 @@ export class GestionarProductosPage implements OnInit {
   async agregarProducto(nuevo_producto: CrearProducto) {
     console.log(nuevo_producto);
     const response: HttpResponse<producto> = await firstValueFrom(this._serviceProducto.agregarNuevoProducto(nuevo_producto));
-    this.obtenerProductos(); // Puede que quieras esperar a que se complete antes de actualizar
+    await this.obtenerProductos(); // Espera a que se complete antes de actualizar
     this.modal.dismiss(this.name, 'confirm');
   }
 
@@ -71,3 +72,4 @@ export class GestionarProductosPage implements OnInit {
     }
   }
 }
+

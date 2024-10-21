@@ -27,7 +27,6 @@
     </ion-item>
   </ng-template>
 
-
   <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
@@ -43,33 +42,31 @@
       </ion-header>
       <ion-content class="ion-padding">
         <ion-item>
-          <ion-input label="sku" type="text" placeholder="sku" [(ngModel)]="nuevo_producto.sku"></ion-input>
+          <ion-input label="SKU" type="text" placeholder="SKU" [(ngModel)]="nuevo_producto.sku"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input label="nombre" type="text" placeholder="nombre" [(ngModel)]="nuevo_producto.nombre"></ion-input>
+          <ion-input label="Nombre" type="text" placeholder="Nombre" [(ngModel)]="nuevo_producto.nombre"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input label="stock" type="text" placeholder="stock" [(ngModel)]="nuevo_producto.stock"></ion-input>
+          <ion-input label="Stock" type="text" placeholder="Stock" [(ngModel)]="nuevo_producto.stock"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input label="precio" type="text" placeholder="precio" [(ngModel)]="nuevo_producto.precio"></ion-input>
+          <ion-input label="Precio" type="text" placeholder="Precio" [(ngModel)]="nuevo_producto.precio"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input label="tipo" type="text" placeholder="tipo" [(ngModel)]="nuevo_producto.tipo"></ion-input>
+          <ion-input label="Tipo" type="text" placeholder="Tipo" [(ngModel)]="nuevo_producto.tipo"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input label="kilos" type="text" placeholder="kilos" [(ngModel)]="nuevo_producto.kilos"></ion-input>
+          <ion-input label="Kilos" type="text" placeholder="Kilos" [(ngModel)]="nuevo_producto.kilos"></ion-input>
         </ion-item>
-
         <ion-item>
           <ion-select label="Compañia" [(ngModel)]="nuevo_producto.compania" placeholder="Compañia">
-            <ion-select-option *ngFor="let compania of companias"
-            [value]="compania.id">{{compania.nombre}}</ion-select-option>
+            <ion-select-option *ngFor="let compania of companias" [value]="compania.id">
+              {{ compania.nombre }}
+            </ion-select-option>
           </ion-select>
-        </ion-item>
-
+        </ion-item>        
       </ion-content>
     </ng-template>
-  
   </ion-modal>
 </ion-content>
