@@ -3,25 +3,16 @@
     <ion-buttons slot="start">
       <ion-back-button default-href="#"></ion-back-button>
     </ion-buttons>
-<<<<<<< HEAD
-    <ion-title>Pedidos</ion-title>
+    <ion-title>Realizar Pedido</ion-title>
     <ion-buttons slot="end">
       <ion-button id="open-modal"> Realizar pedido </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<!--<ion-content [fullscreen]="true">
-  <ion-list *ngIf="productos.length > 0; else listaVacia">
-=======
-    <ion-title>Realizar Pedido</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <!-- Listar los productos obtenidos -->
-  <ion-list>
->>>>>>> 482c7b5bb07bf1fa034f87281cde0fdb21406caf
+  <ion-list *ngIf="productos.length > 0; else listaVacia">
     <ion-item *ngFor="let producto of productos">
       <ion-label>{{ producto.nombre }} - ${{ producto.precio }}</ion-label>
       <ion-input
@@ -40,7 +31,14 @@
   </ion-item>
 
   <!-- Botón para realizar el pedido -->
-  <ion-button expand="block" (click)="realizarPedido()"
-    >Realizar Pedido</ion-button
-  >
+  <ion-button expand="block" (click)="realizarPedido()">
+    Realizar Pedido
+  </ion-button>
 </ion-content>
+
+<ng-template #listaVacia>
+  <ion-item>
+    <ion-label>No hay productos disponibles.</ion-label>
+  </ion-item>
+</ng-template>
+

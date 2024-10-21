@@ -1,28 +1,14 @@
 import { Compania } from './compania';
 
-<<<<<<< HEAD
-export interface producto{
-    id: number;
-    sku: number | null;
-    nombre: string;
-    compania: Compania | null;
-    tipo: string;
-    kilos: number | null;
-    precio: number | null;
-    stock: number | null;
-    deleted_at: Date;
-}
-=======
 export interface producto {
   id: number;
-  sku: number;
+  sku: number; // Si deseas que sku pueda ser nulo, cambia esto a: sku: number | null;
   nombre: string;
   compania: Compania | null;
   tipo: string;
-  kilos: number;
-  precio: number;
-  stock: number;
-  cantidad?: number;
+  kilos: number; // Si deseas que kilos pueda ser nulo, cambia esto a: kilos: number | null;
+  precio: number; // Si deseas que precio pueda ser nulo, cambia esto a: precio: number | null;
+  stock: number; // Si deseas que stock pueda ser nulo, cambia esto a: stock: number | null;
+  cantidad?: number; // Esta propiedad es opcional
   deleted_at: Date;
 }
->>>>>>> 482c7b5bb07bf1fa034f87281cde0fdb21406caf

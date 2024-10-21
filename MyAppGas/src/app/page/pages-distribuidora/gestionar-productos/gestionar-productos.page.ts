@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonModal, NumericValueAccessor } from '@ionic/angular';
+import { IonModal } from '@ionic/angular';
 import { producto } from 'src/app/models/producto';
 import { ProductoService } from 'src/app/api/services/producto/producto.service';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -7,7 +7,7 @@ import { Compania } from 'src/app/models/compania';
 import { CompaniasService } from 'src/app/api/services/companias/companias.service';
 import { firstValueFrom } from 'rxjs';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { CrearProducto } from 'src/app/models/CrearProducto';
+import { CrearProducto } from 'src/app/models/crearProducto';
 
 @Component({
   selector: 'app-gestionar-productos',
@@ -16,35 +16,33 @@ import { CrearProducto } from 'src/app/models/CrearProducto';
 })
 export class GestionarProductosPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
-  
-  mensaje = ""
-  name = ""
+
+  mensaje = "";
+  name = "";
   productos: producto[] = [];
   alertButtons = ['Ok'];
 
-
   nuevo_producto: CrearProducto = {
-    sku: null,
+    sku: "",
     nombre: "",
-    compania: "",
+    compania: null, // Cambiado a null para que coincida con el tipo
     tipo: "",
     kilos: null,
     precio: null,
     stock: null
-  }
+  };
 
-  companias: Compania[] = []
+  companias: Compania[] = [];
 
-  constructor(private _serviceProducto: ProductoService, private _serviceCompania: CompaniasService) { }
+  constructor(private _serviceProducto: ProductoService, private _serviceCompania: CompaniasService) {}
 
   async ngOnInit() {
     try {
-      this.obtenerProductos();
-      this.companias = this._serviceCompania.obtener_companias();
-
-    }catch(error){
-      if (error instanceof HttpErrorResponse){
-        console.error("Error en Authentificación:",error.status)
+      await this.obtenerProductos(); // Agregado await aquí para asegurar que se obtienen los productos
+      this.companias = await firstValueFrom(this._serviceCompania.obtener_companias()); // Asegúrate de que esto devuelva un Observable
+    } catch (error) {
+      if (error instanceof HttpErrorResponse) {
+        console.error("Error en Autenticación:", error.status);
       }
     }
   }
@@ -53,17 +51,17 @@ export class GestionarProductosPage implements OnInit {
     this.modal.dismiss(null, 'cancel');
   }
 
-  async obtenerProductos(){
-    const response: HttpResponse<producto[]>  = await firstValueFrom(this._serviceProducto.obtener_productos());
-    console.log(response)
+  async obtenerProductos() {
+    const response: HttpResponse<producto[]> = await firstValueFrom(this._serviceProducto.obtener_productos());
+    console.log(response);
     this.productos = response.body || [];
   }
 
   async agregarProducto(nuevo_producto: CrearProducto) {
-    console.log(nuevo_producto)
+    console.log(nuevo_producto);
     const response: HttpResponse<producto> = await firstValueFrom(this._serviceProducto.agregarNuevoProducto(nuevo_producto));
-    this.obtenerProductos();
-    this.modal.dismiss(this.name, 'confirm')
+    this.obtenerProductos(); // Puede que quieras esperar a que se complete antes de actualizar
+    this.modal.dismiss(this.name, 'confirm');
   }
 
   onWillDismiss(event: Event) {
