@@ -33,7 +33,11 @@ export class RealizarPedidoPage implements OnInit {
 
   ngOnInit() {
     this.productoService.obtener_productos().subscribe((response: any) => {
-      this.productos = response.body || [];
+      this.productos = response.body.map((producto: producto) => ({
+        ...producto,
+        cantidad: 0,
+      }));
+      console.log(this.productos);
     });
   }
 

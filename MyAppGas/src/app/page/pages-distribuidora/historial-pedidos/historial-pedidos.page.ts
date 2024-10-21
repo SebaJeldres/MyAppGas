@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-historial-pedidos',
+  selector: 'app-historial-pedidos-distribuidora',
   templateUrl: './historial-pedidos.page.html',
   styleUrls: ['./historial-pedidos.page.scss'],
 })
-export class HistorialPedidosPage implements OnInit {
+export class HistorialPedidosDistribuidoraPage implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

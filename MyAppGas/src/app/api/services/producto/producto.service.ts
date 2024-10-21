@@ -9,7 +9,7 @@ import { CrearProducto } from 'src/app/models/crearProducto';
   providedIn: 'root',
 })
 export class ProductoService {
-  path = 'Producto';
+  path = 'producto';
 
   constructor(private apiService: ApiConfigService) {}
 

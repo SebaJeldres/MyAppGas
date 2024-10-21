@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HistorialPedidosPage } from './historial-pedidos.page';
+import { HistorialPedidosDistribuidoraPage } from './historial-pedidos.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: HistorialPedidosPage
-  }
+    component: HistorialPedidosDistribuidoraPage,
+  },
 ];
 
 @NgModule({
