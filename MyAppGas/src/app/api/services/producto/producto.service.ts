@@ -3,7 +3,7 @@ import { producto } from 'src/app/models/producto';
 import { ApiConfigService } from '../api-config/api-config.service';
 import { HttpParams, HttpResponse } from '@angular/common/http';
 import { filter, map, Observable } from 'rxjs';
-import { CrearProducto } from 'src/app/models/crearProducto'; // Asegúrate de que el nombre del archivo y la exportación coincidan
+import { CrearProducto } from 'src/app/models/crearProducto';
 
 @Injectable({
   providedIn: 'root',

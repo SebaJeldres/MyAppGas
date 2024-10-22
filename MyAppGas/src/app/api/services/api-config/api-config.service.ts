@@ -14,6 +14,7 @@ export class ApiConfigService {
 
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
+      'Content-Type': 'application/json',
       'apiKey': environment.apiKeySupabase,
       'Authorization': `Bearer ${environment.apiKeySupabase}`
     });
@@ -26,10 +27,15 @@ export class ApiConfigService {
 
 
   get<T>(path: string, params?: HttpParams): Observable<HttpResponse<T>> {
+    const baseUrl = `${this.baseUrl.replace(/\/$/, '')}/${path}`;
+    console.log('Realizando solicitud a: ', baseUrl);
     return this.http.get<T>(`${this.baseUrl}${path}`, { headers: this.getHeaders(), observe: 'response', params })
     .pipe(
-      catchError(this.handleError)
-    );
+      catchError((error) => {
+        console.error('Error en la solicitud GET: ', error);
+        return throwError(() => error);
+      })
+    )
   }
 
   post<T>(path: string, data: any): Observable<HttpResponse<T>> {

@@ -25,7 +25,7 @@ export class GestionarProductosPage implements OnInit {
   nuevo_producto: CrearProducto = {
     sku: "",
     nombre: "",
-    compania: null, // Cambiado a null para que coincida con el tipo
+    compania: "",
     tipo: "",
     kilos: null,
     precio: null,
@@ -38,11 +38,12 @@ export class GestionarProductosPage implements OnInit {
 
   async ngOnInit() {
     try {
-      await this.obtenerProductos(); // Asegurado que se obtienen los productos
-      this.companias = this._serviceCompania.obtener_companias(); // Asignando las compañias
-    } catch (error) {
+      await this.obtenerProductos();
+      this.companias = this._serviceCompania.obtener_companias();
+
+    } catch (error){
       if (error instanceof HttpErrorResponse) {
-        console.error("Error en Autenticación:", error.status);
+        console.error("Error en Authentificación: ", error.status)
       }
     }
   }
@@ -53,18 +54,29 @@ export class GestionarProductosPage implements OnInit {
   }
 
   async obtenerProductos() {
-    const response: HttpResponse<producto[]> = await firstValueFrom(this._serviceProducto.obtener_productos());
-    console.log(response);
+    try {
+      const response: HttpResponse<producto[]> = await firstValueFrom(this._serviceProducto.obtener_productos());
+      console.log('Respuesta de supabase', response);
+      if (response.body) {
+        console.log('Productos obtenidos: ', response.body);
+    } else {
+      console.warn('No se encontraron productos en la respuesta');
+    }
     this.productos = response.body || [];
+  } catch (error) {
+    console.log('Error al obtener productos: ', error);
   }
+}
 
-  async agregarProducto(nuevo_producto: CrearProducto) {
-    console.log(nuevo_producto);
-    const response: HttpResponse<producto> = await firstValueFrom(this._serviceProducto.agregarNuevoProducto(nuevo_producto));
-    await this.obtenerProductos(); // Espera a que se complete antes de actualizar
-    this.modal.dismiss(this.name, 'confirm');
+  async agregarProducto(nuevoProducto: CrearProducto) {
+    console.log(nuevoProducto)
+    const response: HttpResponse<producto> = await firstValueFrom(this._serviceProducto.agregarNuevoProducto(nuevoProducto));
+    console.log(response)
+    this.obtenerProductos();
+    this.modal.dismiss(this.name, 'confirm')
+  
   }
-
+  
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
     if (ev.detail.role === 'confirm') {

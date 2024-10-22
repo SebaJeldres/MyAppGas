@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-
+import { authGuard } from './guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
@@ -13,7 +13,9 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./page/home/home.module').then(m => m.HomePageModule)
+    loadChildren: () => import('./page/home/home.module').then(m => m.HomePageModule),
+    //canActivate: [authGuard]
+    
   },
   {
     path: 'historial-pedidos',

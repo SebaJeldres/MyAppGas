@@ -1,13 +1,23 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>historial-pedidos</ion-title>
+    <ion-title>Historial De Pedidos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">historial-pedidos</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+<!--<ion-content [fullscreen]="true">
+  <ion-list *ngIf="pedidos.length > 0; else listaVacia">
+    <ion-item *ngFor="let pedido of pedidos">
+      <ion-label>{{pedido.nombre}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #listaVacia>
+    <ion-item lines="none">
+      <ion-label class="ion-text-center">
+        <ion-text color="medium">
+          <h2>No hay productos disponibles.</h2>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+  </ng-template>
+</ion-content>-->
