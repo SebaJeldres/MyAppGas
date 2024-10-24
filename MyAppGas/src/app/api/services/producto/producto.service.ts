@@ -18,9 +18,7 @@ export class ProductoService {
     return this.apiService.get<producto[]>(this.path, params).pipe(
       map((response) => {
         console.log(response);
-        const filteredBody = response.body?.filter(
-          (product) => product.deleted_at === null
-        );
+        const filteredBody = response.body;
 
         return new HttpResponse({
           body: filteredBody,

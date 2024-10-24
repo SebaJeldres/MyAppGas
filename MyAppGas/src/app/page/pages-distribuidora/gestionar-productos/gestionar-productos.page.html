@@ -13,7 +13,7 @@
 <ion-content [fullscreen]="true">
   <ion-list *ngIf="productos.length > 0; else listaVacia">
     <ion-item *ngFor="let producto of productos">
-      <ion-label>{{producto.nombre}}</ion-label>
+      <ion-label> Id:{{producto.id}} || {{producto.nombre}} {{producto.kilos}} {{producto.tipo}} || Precio: {{producto.precio}} || Stock:{{producto.stock}}</ion-label>
     </ion-item>
   </ion-list>
 
