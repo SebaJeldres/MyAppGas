@@ -80,7 +80,22 @@ export class HomePage implements OnInit {
     });
   }
 
-  // Método en HomePage para navegar a InformacionVehiculoPage
+irAHistorialPedidos() {
+  this.router.navigate(['historial-pedidos'], {
+    state: {
+      id: this.id // Asegúrate de que 'this.id' tiene el valor correcto
+    }
+  });
+}
+irARealizarPedidos() {
+  this.router.navigate(['realizar-pedido'], {
+    state: {
+      id: this.id // Asegúrate de que 'this.id' tiene el valor correcto
+    }
+  });
+}
+
+// Id a Repartidor
 irAInformacionVehiculo() {
   this.router.navigate(['informacion-vehiculo'], {
     state: {
@@ -88,7 +103,30 @@ irAInformacionVehiculo() {
     }
   });
 }
+irAHistorialEntregas() {
+  this.router.navigate(['historial-entregas'], {
+    state: {
+      id: this.id // Asegúrate de que 'this.id' tiene el valor correcto
+    }
+  });
+}
 
+//Id Dsitribuidora
+
+irAGestionarProductos() {
+  this.router.navigate(['gestionar-productos'], {
+    state: {
+      id: this.id // Asegúrate de que 'this.id' tiene el valor correcto
+    }
+  });
+}
+irAHistorialVentas() {
+  this.router.navigate(['historial-ventas'], {
+    state: {
+      id: this.id // Asegúrate de que 'this.id' tiene el valor correcto
+    }
+  });
+}
 }
 
 
