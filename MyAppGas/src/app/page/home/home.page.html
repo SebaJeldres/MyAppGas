@@ -45,10 +45,10 @@
         <ion-button (click)="irAPerfilDistribuidora()" [routerLink]="['/cuenta-distribuidora']">Info Distribuidora</ion-button>
       </ion-item>
       <ion-item *ngIf="rol === 'Distribuidora'">
-        <ion-button  (click)="irAGestionarProductos" [routerLink]="['/gestionar-productos']">Gestionar productos</ion-button>
+        <ion-button  (click)="irAGestionarProductos()" [routerLink]="['/gestionar-productos']">Gestionar productos</ion-button>
       </ion-item>
       <ion-item *ngIf="rol === 'Distribuidora'">
-        <ion-button  (click)="irAHistorialVentas" [routerLink]="['/historial-ventas']">Historial ventas</ion-button>
+        <ion-button  (click)="irAHistorialVentas()" [routerLink]="['/historial-ventas']">Historial ventas</ion-button>
       </ion-item>
       <ion-item>
         <ion-button [routerLink]="['/login']">Cerrar Sesion</ion-button>
@@ -111,7 +111,7 @@
 
   <ion-card *ngIf="rol === 'Repartidor'">
     <ion-card-header>
-      <ion-card-title>Entregas en proceso en proceso</ion-card-title>
+      <ion-card-title>Entregas en proceso</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>

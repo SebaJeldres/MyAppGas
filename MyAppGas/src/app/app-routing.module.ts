@@ -47,7 +47,7 @@ const routes: Routes = [
   },
   {
     path: 'historial-ventas',
-    loadChildren: () => import('./page/pages-distribuidora/historial-pedidos/historial-pedidos.module').then(m => m.HistorialPedidosPageModule)
+    loadChildren: () => import('./page/pages-distribuidora/historial-ventas/historial-ventas.module').then(m => m.HistorialVentasPageModule)
   },
   {
     path: 'cuenta-distribuidora',
