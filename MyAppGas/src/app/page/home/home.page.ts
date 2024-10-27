@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 
 export class HomePage implements OnInit {
-
+  id: string | null = null;
   username: string | null = null;
   rol: string | null = null;
   Nombre: string | null = null
@@ -23,6 +23,7 @@ export class HomePage implements OnInit {
     // Recuperar el estado de la navegación
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
+      this.id= navigation.extras.state['id']
       this.username = navigation.extras.state['x'];
       this.rol = navigation.extras.state['rol'] || 'No definido';
       this.Nombre = navigation.extras.state['nombre'] || '';
@@ -37,6 +38,7 @@ export class HomePage implements OnInit {
   irAPerfilUser() {
     this.router.navigate(['cuenta-usuario'], {
       state: {
+        id: this.id,
         username: this.username,
         rol: this.rol,
         nombre: this.Nombre,
@@ -51,6 +53,7 @@ export class HomePage implements OnInit {
   irAPerfilRepartidor() {
     this.router.navigate(['cuenta-repartidor'], {
       state: {
+        id: this.id,
         username: this.username,
         rol: this.rol,
         nombre: this.Nombre,
@@ -65,6 +68,7 @@ export class HomePage implements OnInit {
   irAPerfilDistribuidora() {
     this.router.navigate(['cuenta-distribuidora'], {
       state: {
+        id: this.id,
         username: this.username,
         rol: this.rol,
         nombre: this.Nombre,
@@ -75,6 +79,16 @@ export class HomePage implements OnInit {
       }
     });
   }
+
+  // Método en HomePage para navegar a InformacionVehiculoPage
+irAInformacionVehiculo() {
+  this.router.navigate(['informacion-vehiculo'], {
+    state: {
+      id: this.id // Asegúrate de que 'this.id' tiene el valor correcto
+    }
+  });
+}
+
 }
 
 

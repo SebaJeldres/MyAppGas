@@ -10,5 +10,4 @@ export interface producto {
   precio: number; 
   stock: number; 
   cantidad?: number; 
-  deleted_at: Date;
 }

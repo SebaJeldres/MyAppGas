@@ -8,10 +8,10 @@ import { Router } from '@angular/router';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-
 export class LoginPage implements OnInit {
 
   userLogin: Users = {
+    id: "",
     username: "",
     password: "",
     rol: "",
@@ -26,14 +26,15 @@ export class LoginPage implements OnInit {
 
   ngOnInit() { }
 
-  login(userLogin: Users) {
-    console.log(userLogin);
-    const user = this._userLogin.encontrar_usuario(userLogin); // Buscar usuario
+  login() {  // Sin parámetros
+    console.log(this.userLogin);
+    const user = this._userLogin.encontrar_usuario(this.userLogin); // Buscar usuario
     if (user) {
       console.info("Usuario encontrado");
       // Navegar a la página 'home' y pasar el estado (datos del usuario)
       this.router.navigate(['home'], {
         state: {
+          id: user.id,
           x: user.username,  // Pasar el username
           rol: user.rol,     // Pasar el rol del usuario
           nombre: user.Nombre,  // Pasar el nombre
@@ -48,3 +49,4 @@ export class LoginPage implements OnInit {
     }
   }
 }
+

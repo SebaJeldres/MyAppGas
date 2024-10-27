@@ -13,6 +13,7 @@ export class LoginUsersService {
   constructor() {
     this.lista_de_usuarios = [
       {
+        id: "1",
         username: "Dario_user",
         password: this.encryptPassword('Dario1'),
         rol: "usuario",
@@ -23,6 +24,7 @@ export class LoginUsersService {
         Direccion: "Belloto norte, las parcelas, 555"
       },
       {
+        id: "2",
         username: "Jose_Repartidor",
         password: this.encryptPassword('Jose1'),
         rol: "Repartidor",
@@ -33,6 +35,7 @@ export class LoginUsersService {
         Direccion: "Belloto norte, las parcelas, 555"
       },
       {
+        id: "3", // Cambiar de punto y coma a coma
         username: "Carlos_admin",
         password: this.encryptPassword('Carlos1'),
         rol: "Distribuidora",
@@ -44,6 +47,7 @@ export class LoginUsersService {
       }
     ];
   }
+  
 
   // Método para cifrar la contraseña
   private encryptPassword(password: string): string {

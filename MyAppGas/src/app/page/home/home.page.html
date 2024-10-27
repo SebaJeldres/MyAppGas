@@ -34,7 +34,7 @@
         <ion-button (click)="irAPerfilRepartidor()" [routerLink]="['/cuenta-repartidor']">Perfil</ion-button>
       </ion-item>
       <ion-item *ngIf="rol === 'Repartidor'">
-        <ion-button [routerLink]="['/informacion-vehiculo']">Informacion Vehiculo</ion-button>
+        <ion-button (click)="irAInformacionVehiculo()" [routerLink]="['/informacion-vehiculo']">Informacion Vehiculo</ion-button>
       </ion-item>
       <ion-item *ngIf="rol === 'Repartidor'">
         <ion-button [routerLink]="['/historial-entregas']">Historial de entregas</ion-button>
@@ -59,7 +59,7 @@
 
 <!-- Contenido principal -->
 <ion-content id="main-content" padding>
-  <h1>Bienvenido, {{ username }}!</h1>
+  <h1 class="h1_a">Bienvenido, {{ username }}</h1>
 
   <!-- Card que muestra la información del usuario -->
   <ion-card>
@@ -68,29 +68,77 @@
     </ion-card-header>
 
     <ion-card-content>
+      <p><strong>Id:</strong> {{ id }}</p>
       <p><strong>Nombre:</strong> {{ Nombre }} {{ apellido }} </p>
       <p><strong>Correo:</strong> {{ Correo }}</p>
       <p><strong>Direccion:</strong>{{Direccion}}</p>
     </ion-card-content>
   </ion-card>
+  <ion-card *ngIf="rol === 'usuario'">
+    <ion-card-header>
+      <ion-card-title>Pedido en proceso</ion-card-title>
+    </ion-card-header>
 
-  <br>
+    <ion-card-content>
+      <p>No hay pedidos en proceso </p>
+    </ion-card-content>
+  </ion-card>
+
+<br>
+
   <ion-card *ngIf="rol === 'usuario'">
     <ion-card-header>
       <ion-card-title>Ultimo pedido</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <p><strong>Fecha:</strong> </p>
-      <p><strong>Hora</strong> </p>
-      <p><strong>Datos Repartidor:</strong> </p>
-      <p><strong>Distribuidora:</strong> </p>
-      <p><strong>Monto total:</strong> </p>
-      <p><strong>Direccion:</strong></p>
-      <p><ion-button>Repetir pedido</ion-button> </p>
-    </ion-card-content>
+      <p>No ha realizado pedidos</p>
+    </ion-card-content> 
   </ion-card>
 
 
+  <ion-card *ngIf="rol === 'Repartidor'">
+    <ion-card-header>
+      <ion-card-title>Entregas pendientes</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>No hay entregas pendientes</p>
+    </ion-card-content>
+  </ion-card>
+
+<br>
+
+  <ion-card *ngIf="rol === 'Repartidor'">
+    <ion-card-header>
+      <ion-card-title>Entregas en proceso en proceso</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>No hay entregas en proceso</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="rol === 'Distribuidora'">
+    <ion-card-header>
+      <ion-card-title>Solicitudes pendientes</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>No hay solicitudes pendientes</p>
+    </ion-card-content>
+  </ion-card>
+
+<br>
+
+  <ion-card *ngIf="rol === 'Distribuidora'">
+    <ion-card-header>
+      <ion-card-title>Pedidos en proceso</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>No hay pedidos en proceso</p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
 
