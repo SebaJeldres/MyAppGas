@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { ProductoService } from 'src/app/api/services/producto/producto.service'; // Servicio para obtener productos
 import { SolicitudService } from 'src/app/api/services/solicitud/solicitud.service'; // Servicio para manejar pedidos
+import { crearSolicitud } from 'src/app/models/crearSolicitud';
 import { producto } from 'src/app/models/producto'; // Modelo Producto
-import { Pedido } from 'src/app/models/pedido'; // Modelo Pedido
+import { solicitud } from 'src/app/models/solicitud'; // Modelo Pedido
 
 @Component({
   selector: 'app-realizar-pedido',
@@ -11,25 +14,21 @@ import { Pedido } from 'src/app/models/pedido'; // Modelo Pedido
 })
 export class RealizarPedidoPage implements OnInit {
   productos: producto[] = [];
-  pedido: Pedido = {
-    id: '',
-    nombre_usuario: 'Nombre del usuario',
-    nombre_repartidor: '',
-    distribuidora: 'Distribuidora predeterminada',
-    patente: '',
-    monto_total: 0,
+  solicitud: solicitud = {
+    direccion: '',
+    numtelefonico: '',
     detalle_pedido: [],
-    metodo_pago: '',
-    direccion: 'Dirección del usuario',
-    num_telefonico: 'Número telefónico',
-    estado: 'Disponible',
+    metodo_pago: 0,
+    hora_ini: new Date(),
+    estado_soli: '',
+    monto_total: 0
   };
   total: number = 0;
 
   constructor(
     private solicitudService: SolicitudService,
     private productoService: ProductoService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.productoService.obtener_productos().subscribe((response: any) => {
@@ -45,7 +44,7 @@ export class RealizarPedidoPage implements OnInit {
     this.total = this.productos.reduce((sum, producto) => {
       return sum + producto.precio * (producto.cantidad || 0);
     }, 0);
-    this.pedido.monto_total = this.total;
+    this.solicitud.monto_total = this.total;
   }
 
   realizarPedido() {
@@ -58,16 +57,28 @@ export class RealizarPedidoPage implements OnInit {
       return;
     }
 
-    this.pedido.detalle_pedido = productosSeleccionados;
+    this.solicitud.detalle_pedido = productosSeleccionados;
 
-    this.solicitudService.crearPedido(this.pedido).subscribe(
+    this.solicitudService.crearSolicitud(this.solicitud).subscribe(
       (response: any) => {
         alert(`Pedido realizado por un total de $${this.total}`);
       },
-      (error: any) => {
+      (error: HttpErrorResponse) => {
         alert('Hubo un error al realizar el pedido.');
         console.error('Error al realizar el pedido:', error);
       }
     );
   }
+
+  async agregarSolicitud(nuevaSolicitud: crearSolicitud) {
+    try {
+      console.log(nuevaSolicitud)
+      const response: HttpResponse<solicitud> = await firstValueFrom(this.solicitudService.agregarSolicitud(nuevaSolicitud));
+      console.log(response)
+    } catch (error) {
+      console.error(error)
+    }
+
+  }
+
 }

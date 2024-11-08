@@ -1,5 +1,6 @@
-export interface solicitud{
-    id?: string;
+export interface crearSolicitud {
+    id_solicitud: number;
+    id_usario: Number ;
     nombre_usuario?:string;
     direccion:string;
     numtelefonico:string;
@@ -8,5 +9,4 @@ export interface solicitud{
     hora_ini: Date;
     estado_soli: string;
     monto_total: number;
-
 }
