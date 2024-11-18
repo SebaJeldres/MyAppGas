@@ -124,6 +124,8 @@
       <ion-card-title>Solicitudes pendientes</ion-card-title>
       <ion-list>
         <ion-item *ngFor="let solicitud of solicitudes">
+          <ion-label>{{ solicitud.id }} {{ solicitud.estado_soli }} {{solicitud.monto_total}}</ion-label>
+          <ion-button>Ver detalle</ion-button>
         </ion-item>
       </ion-list>
     </ion-card-header>

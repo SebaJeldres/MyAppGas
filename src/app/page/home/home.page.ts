@@ -41,11 +41,14 @@ export class HomePage implements OnInit {
 
     // Obtener las solicitudes del servicio
     this.SolicitudService.obtener_solicitud().subscribe((response: any) => {
-      this.solicitudes = response.body.map((solicitud: solicitud) => ({
-        ...solicitud,
-      }));
+      this.solicitudes = response.body
+        .filter((solicitud: solicitud) => solicitud.estado_soli === 'espera') // Filtrar por estado_soli = "espera"
+        .map((solicitud: solicitud) => ({
+          ...solicitud,
+        }));
       console.log(this.solicitudes);
     });
+    
   }
 
   // Método para navegar a la página de perfil de usuario
