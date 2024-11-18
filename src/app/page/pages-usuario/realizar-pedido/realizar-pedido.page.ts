@@ -20,7 +20,7 @@ export class RealizarPedidoPage implements OnInit {
     detalle_pedido: [],
     metodo_pago: 0,
     hora_ini: new Date(),
-    estado_soli: '',
+    estado_soli: 'espera',
     monto_total: 0
   };
   total: number = 0;
@@ -50,7 +50,7 @@ export class RealizarPedidoPage implements OnInit {
   realizarPedido() {
     const productosSeleccionados = this.productos
       .filter((producto) => producto.cantidad && producto.cantidad > 0)
-      .map((producto) => `${producto.nombre} (${producto.cantidad})`);
+      .map((producto) => `${producto.id} ${producto.nombre} (${producto.cantidad})`);
 
     if (productosSeleccionados.length === 0) {
       alert('Por favor, selecciona al menos un producto.');

@@ -14,7 +14,7 @@
   <!-- Listar los productos obtenidos -->
   <ion-list *ngIf="productos.length > 0; else listaVacia">
     <ion-item *ngFor="let producto of productos">
-      <ion-label> {{ producto.nombre }} {{ producto.kilos }}kg - ${{ producto.precio }}</ion-label>
+      <ion-label>{{ producto.nombre }} {{ producto.kilos }}kg - ${{ producto.precio }}</ion-label>
       <ion-input
         type="number"
         [(ngModel)]="producto.cantidad"

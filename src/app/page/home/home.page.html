@@ -122,11 +122,11 @@
   <ion-card *ngIf="rol === 'Distribuidora'">
     <ion-card-header>
       <ion-card-title>Solicitudes pendientes</ion-card-title>
+      <ion-list>
+        <ion-item *ngFor="let solicitud of solicitudes">
+        </ion-item>
+      </ion-list>
     </ion-card-header>
-
-    <ion-card-content>
-      <p>No hay solicitudes pendientes</p>
-    </ion-card-content>
   </ion-card>
 
 <br>
@@ -134,11 +134,11 @@
   <ion-card *ngIf="rol === 'Distribuidora'">
     <ion-card-header>
       <ion-card-title>Pedidos en proceso</ion-card-title>
+      <ion-list>
+        <ion-item *ngFor="let solicitud of solicitudes">
+        </ion-item>
+      </ion-list>
     </ion-card-header>
-
-    <ion-card-content>
-      <p>No hay pedidos en proceso</p>
-    </ion-card-content>
   </ion-card>
 </ion-content>
 

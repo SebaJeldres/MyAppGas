@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpParams, HttpResponse } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 import { ApiConfigService } from '../api-config/api-config.service'; // Servicio para manejar las API requests
 import { solicitud } from 'src/app/models/solicitud'; // Modelo de Pedido
 import { crearSolicitud } from 'src/app/models/crearSolicitud';
+
 
 @Injectable({
   providedIn: 'root',
@@ -27,4 +28,22 @@ export class SolicitudService {
   ): Observable<HttpResponse<solicitud>> {
     return this.apiService.post(this.path, solicitud);
   }
+
+  obtener_solicitud(): Observable<HttpResponse<solicitud[]>> {
+    const params = new HttpParams().set('select', '*');
+    return this.apiService.get<solicitud[]>(this.path, params).pipe(
+      map((response) => {
+        console.log(response);
+        const filteredBody = response.body; 
+
+        return new HttpResponse({
+          body: filteredBody,
+          headers: response.headers,
+          status: response.status,
+          statusText: response.statusText,
+        });
+      })
+    );
+  }
 }
+
