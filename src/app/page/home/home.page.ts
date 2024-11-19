@@ -42,7 +42,7 @@ export class HomePage implements OnInit {
     // Obtener las solicitudes del servicio
     this.SolicitudService.obtener_solicitud().subscribe((response: any) => {
       this.solicitudes = response.body
-        .filter((solicitud: solicitud) => solicitud.estado_soli === 'espera') // Filtrar por estado_soli = "espera"
+      .filter((solicitud: solicitud) => solicitud.estado_soli === 'espera' && solicitud.nombre_usuario === 'Dario_user')
         .map((solicitud: solicitud) => ({
           ...solicitud,
         }));
@@ -112,6 +112,13 @@ export class HomePage implements OnInit {
       }
     });
   }
+  irADetalleSolicitud(solicitud: any) {
+    this.router.navigate(['detalle-soli'], {
+      state: { solicitudId: solicitud.id }, // Solo enviamos el id
+    });
+  }
+  
+  
 
   // Id a Repartidor
   irAInformacionVehiculo() {

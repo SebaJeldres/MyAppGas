@@ -5,7 +5,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Importa FormsModule
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,7 +14,8 @@ import { FormsModule } from '@angular/forms'; // Importa FormsModule
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule, // Importa el módulo HTTP aquí
-    FormsModule, // Asegúrate de incluir FormsModule
+    FormsModule,
+    ReactiveFormsModule, // Asegúrate de incluir FormsModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

@@ -53,6 +53,11 @@ const routes: Routes = [
     path: 'cuenta-distribuidora',
     loadChildren: () => import('./page/pages-distribuidora/cuenta-distribuidora/cuenta-distribuidora.module').then(m => m.CuentaDistribuidoraPageModule)
   },
+  {
+    path: 'detalle-soli',
+    loadChildren: () => import('./page/pages-distribuidora/detalle-soli/detalle-soli.module').then( m => m.DetalleSoliPageModule)
+  },
+
 ];
 
 @NgModule({

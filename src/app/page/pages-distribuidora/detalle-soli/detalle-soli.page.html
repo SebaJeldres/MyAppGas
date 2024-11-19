@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Detalle Solicitud</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="solicitudForm">
+    <ion-list>
+      <ion-item>
+        <ion-label>ID Solicitud</ion-label>
+        <ion-input formControlName="id" readonly></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Estado</ion-label>
+        <ion-input formControlName="estado_soli"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Monto Total</ion-label>
+        <ion-input formControlName="monto_total"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Usuario</ion-label>
+        <ion-input formControlName="nombre_usuario"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Dirección</ion-label>
+        <ion-input formControlName="direccion_entrega"></ion-input>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
+

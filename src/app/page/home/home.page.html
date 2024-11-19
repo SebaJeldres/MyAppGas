@@ -74,15 +74,39 @@
       <p><strong>Direccion:</strong>{{Direccion}}</p>
     </ion-card-content>
   </ion-card>
+
+  <br>
+
   <ion-card *ngIf="rol === 'usuario'">
     <ion-card-header>
-      <ion-card-title>Pedido en proceso</ion-card-title>
+      <ion-card-title>Solicitudes en proceso</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <p>No hay pedidos en proceso </p>
+      <ion-card *ngIf="rol === 'usuario'">
+        <ion-card-header>
+          <ion-card-title>Solicitudes pendientes</ion-card-title>
+          <ion-list>
+            <ion-item *ngFor="let solicitud of solicitudes">
+              <ion-label>{{ solicitud.id }} {{ solicitud.estado_soli }} {{solicitud.monto_total}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card-header>
+      </ion-card>
     </ion-card-content>
   </ion-card>
+
+<br>
+
+<ion-card *ngIf="rol === 'usuario'">
+  <ion-card-header>
+    <ion-card-title>Pedidos en proceso</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p>No hay pedidos en proceso </p>
+  </ion-card-content>
+</ion-card>
 
 <br>
 
@@ -123,10 +147,21 @@
     <ion-card-header>
       <ion-card-title>Solicitudes pendientes</ion-card-title>
       <ion-list>
-        <ion-item *ngFor="let solicitud of solicitudes">
-          <ion-label>{{ solicitud.id }} {{ solicitud.estado_soli }} {{solicitud.monto_total}}</ion-label>
-          <ion-button>Ver detalle</ion-button>
-        </ion-item>
+        <ion-item class="item-soli" *ngFor="let solicitud of solicitudes">
+          <div class="content">
+            <div class="data-row">
+              <span><p>Estado:</p>{{ solicitud.estado_soli }}</span>
+              <span><p>Usuario:</p>{{ solicitud.nombre_usuario }}</span>
+              <span><p>Monto total:</p> ${{ solicitud.monto_total }}</span>
+            </div>
+            <ion-button
+              (click)="irADetalleSolicitud(solicitud)"
+              class="button-detalle"
+            >
+              Ver detalle
+            </ion-button>
+          </div>
+        </ion-item>               
       </ion-list>
     </ion-card-header>
   </ion-card>

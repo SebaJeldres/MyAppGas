@@ -15,6 +15,7 @@ import { solicitud } from 'src/app/models/solicitud'; // Modelo Pedido
 export class RealizarPedidoPage implements OnInit {
   productos: producto[] = [];
   solicitud: solicitud = {
+    nombre_usuario: 'Dario_user',
     direccion: '',
     numtelefonico: '',
     detalle_pedido: [],
