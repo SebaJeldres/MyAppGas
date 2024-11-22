@@ -7,7 +7,7 @@
     "generate-env": "node env-config.js",
     "serve:dev": "ENV=development LOCAL_ENV=true npm run generate-env && ionic serve",
     "serve:staging": "ENV=staging LOCAL_ENV=true npm run generate-env && ionic serve",
-    "server:prod": "ENV=production LOCAL_ENV=true npm run generate-env && ionic serve",
+    "server:prod": "npm run generate-env && ionic serve",
     "ng": "ng",
     "start": "ng serve",
     "build": "ENV=production npm run generate-env && ng build",
