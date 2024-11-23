@@ -45,5 +45,12 @@ export class SolicitudService {
       })
     );
   }
+
+  actualizarEstadoSolicitud(id: number, estado: string): Observable<any> {
+    const body = { estado_soli: estado };
+    // Asegúrate de que la URL esté bien construida
+    return this.apiService.patch(`solicitud?id=eq.${id}`, body);
+  }
+  
 }
 

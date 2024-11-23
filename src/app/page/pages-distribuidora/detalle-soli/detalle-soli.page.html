@@ -8,30 +8,69 @@
   <form [formGroup]="solicitudForm">
     <ion-list>
       <ion-item>
-        <ion-label>ID Solicitud</ion-label>
+        <ion-label>ID: </ion-label>
         <ion-input formControlName="id" readonly></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Estado</ion-label>
+        <ion-label>Estado: </ion-label>
         <ion-input formControlName="estado_soli"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Monto Total</ion-label>
+        <ion-label>Monto Total: </ion-label>
         <ion-input formControlName="monto_total"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Usuario</ion-label>
+        <ion-label>Usuario: </ion-label>
         <ion-input formControlName="nombre_usuario"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Dirección</ion-label>
+        <ion-label>Dirección: </ion-label>
         <ion-input formControlName="direccion_entrega"></ion-input>
       </ion-item>
+
+      <ion-item>
+        <ion-label>Metodo de pago: </ion-label>
+        <ion-input formControlName="metodo_pago"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Num Telefonico: </ion-label>
+        <ion-input formControlName="numtelefonico"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Hora Inicio: </ion-label>
+        <ion-input formControlName="hora_ini"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Detalle Solicitud: </ion-label>
+        <ion-input formControlName="detalle_solicitud"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Nombre Repartidor: </ion-label>
+        <ion-input formControlName="direccion_entrega"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Distribuidora: </ion-label>
+        <ion-input formControlName="direccion_entrega"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>patente: </ion-label>
+        <ion-input formControlName="direccion_entrega"></ion-input>
+      </ion-item>
+
     </ion-list>
   </form>
+
+  <ion-button>Aceptar</ion-button>
+  <ion-button (click)="CancelarSolicitud()">Rechazar</ion-button>
 </ion-content>
 

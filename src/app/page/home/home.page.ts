@@ -11,6 +11,7 @@ import { solicitud } from 'src/app/models/solicitud';
 
 export class HomePage implements OnInit {
   solicitudes: solicitud[] = [];
+  solicitudesCanceladas: solicitud[] = [];  // Nueva variable para solicitudes canceladas
   id: string | null = null;
   username: string | null = null;
   rol: string | null = null;
@@ -42,15 +43,23 @@ export class HomePage implements OnInit {
     // Obtener las solicitudes del servicio
     this.SolicitudService.obtener_solicitud().subscribe((response: any) => {
       this.solicitudes = response.body
-      .filter((solicitud: solicitud) => solicitud.estado_soli === 'espera' && solicitud.nombre_usuario === 'Dario_user')
+        .filter((solicitud: solicitud) => solicitud.estado_soli === 'espera' && solicitud.nombre_usuario === 'Dario_user')
         .map((solicitud: solicitud) => ({
           ...solicitud,
         }));
-      console.log(this.solicitudes);
-    });
-    
-  }
 
+      // Filtrar las solicitudes canceladas
+      this.solicitudesCanceladas = response.body
+        .filter((solicitud: solicitud) => solicitud.estado_soli === 'Cancelado' && solicitud.nombre_usuario === 'Dario_user')
+        .map((solicitud: solicitud) => ({
+          ...solicitud,
+        }));
+
+      console.log("Solicitudes en espera:", this.solicitudes);
+      console.log("Solicitudes canceladas:", this.solicitudesCanceladas);
+    });
+  }
+  
   // Método para navegar a la página de perfil de usuario
   irAPerfilUser() {
     this.router.navigate(['cuenta-usuario'], {
@@ -114,7 +123,7 @@ export class HomePage implements OnInit {
   }
   irADetalleSolicitud(solicitud: any) {
     this.router.navigate(['detalle-soli'], {
-      state: { solicitudId: solicitud.id }, // Solo enviamos el id
+      state: { solicitud }, // Enviamos toda la información de la solicitud
     });
   }
   
