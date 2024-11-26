@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SolicitudService } from 'src/app/api/services/solicitud/solicitud.service';
+import { PedidoService } from 'src/app/api/services/pedido/pedido.service';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -17,18 +18,21 @@ export class DetalleSoliPage implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private solicitudService: SolicitudService,
+    private pedidoService: PedidoService, // Servicio de pedidos
     private alertController: AlertController
   ) {
     this.solicitudForm = this.formBuilder.group({
       id: [''],
-      estado_soli: [''],
       monto_total: [''],
       nombre_usuario: [''],
+      nombre_repartidor:[''],
+      distribuidora:[''],
+      patente:[''],
       direccion_entrega: [''],
       metodo_pago: [''],
       hora_ini: [''],
       numtelefonico: [''],
-      detalle_solicitud:[],
+      detalle_solicitud: [],
     });
   }
 
@@ -39,7 +43,6 @@ export class DetalleSoliPage implements OnInit {
       if (solicitud) {
         this.solicitudForm.patchValue({
           id: solicitud.id,
-          estado_soli: solicitud.estado_soli,
           monto_total: solicitud.monto_total,
           nombre_usuario: solicitud.nombre_usuario,
           direccion_entrega: solicitud.direccion,
@@ -52,6 +55,77 @@ export class DetalleSoliPage implements OnInit {
     }
   }
 
+  // Crear pedido cuando el usuario hace click en "Aceptar"
+async crearPedido() {
+  if (!this.solicitudForm.valid) {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: 'Por favor, complete todos los campos requeridos antes de continuar.',
+      buttons: ['OK'],
+    });
+    await alert.present();
+    return;
+  }
+
+  // Crear el objeto del nuevo pedido, omitiendo el campo 'id'
+  const nuevoPedido = {
+    nombre_usuario: this.solicitudForm.get('nombre_usuario')?.value,
+    nombre_repartidor:'Sin asignar',
+    distribuidora: 'Carlos_admin',
+    patente: 'No registrada',
+    monto_total: this.solicitudForm.get('monto_total')?.value,
+    detalle_pedido: this.solicitudForm.get('detalle_solicitud')?.value,
+    metodo_pago: this.solicitudForm.get('metodo_pago')?.value,
+    direccion: this.solicitudForm.get('direccion_entrega')?.value,
+    num_telefonico: this.solicitudForm.get('numtelefonico')?.value,
+    estado: 'espera', // Estado inicial del pedido
+  };
+
+  console.log('Enviando pedido:', nuevoPedido);
+
+  try {
+    // Usando subscribe() para enviar el pedido al backend
+    this.pedidoService.crearPedido(nuevoPedido).subscribe({
+      next: async (pedido) => {
+        const alert = await this.alertController.create({
+          header: 'Éxito',
+          message: 'El pedido fue creado correctamente.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+
+        // Actualizar el estado de la solicitud a "aceptado"
+        const solicitudId = this.solicitudForm.get('id')?.value;
+        if (solicitudId) {
+          await this.solicitudService.actualizarEstadoSolicitud(solicitudId, 'aceptado').toPromise();
+        }
+      },
+      error: async (error) => {
+        console.error('Error al crear el pedido:', error);
+
+        const mensajeError = error?.error?.message || error?.message || 'Ocurrió un error al crear el pedido. Intente nuevamente.';
+
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: mensajeError,
+          buttons: ['OK'],
+        });
+        await alert.present();
+      },
+    });
+  } catch (error) {
+    console.error('Error al crear el pedido:', error);
+
+    const alert = await this.alertController.create({
+      header: 'Error',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+}
+
+
+  // Rechazar la solicitud
   CancelarSolicitud() {
     const solicitudId = this.solicitudForm.get('id')?.value; 
     if (solicitudId) {
@@ -64,6 +138,7 @@ export class DetalleSoliPage implements OnInit {
               message: 'La solicitud fue cancelada correctamente.',
               buttons: ['OK'],
             });
+            await alert.present();
           },
           error: async (error) => {
             console.error(error);
@@ -77,6 +152,4 @@ export class DetalleSoliPage implements OnInit {
         });
     }
   }
-  
-
 }

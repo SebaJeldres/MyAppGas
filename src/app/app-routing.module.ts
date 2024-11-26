@@ -56,7 +56,15 @@ const routes: Routes = [
   {
     path: 'detalle-soli',
     loadChildren: () => import('./page/pages-distribuidora/detalle-soli/detalle-soli.module').then( m => m.DetalleSoliPageModule)
+  },  {
+    path: 'detalle-pedido',
+    loadChildren: () => import('./page/pages-repartidor/detalle-pedido/detalle-pedido.module').then( m => m.DetallePedidoPageModule)
   },
+  {
+    path: 'boleta',
+    loadChildren: () => import('./page/boleta/boleta.module').then( m => m.BoletaPageModule)
+  },
+
 
 ];
 

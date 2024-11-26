@@ -1,6 +1,6 @@
 export interface Pedido {
     
-    id: string;
+    id?: string;
     nombre_usuario: string;
     nombre_repartidor: string;
     distribuidora: string;
@@ -10,6 +10,6 @@ export interface Pedido {
     metodo_pago: string;
     direccion: string;
     num_telefonico: string;
-    estado: 'Entrega' | 'Camino' | 'Disponible' | 'Fuera de servicio'; // Estado con las opciones específicas
+    estado: string; // Estado con las opciones específicas
   }
   

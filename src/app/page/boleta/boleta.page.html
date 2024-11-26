@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Detalle Pedido</ion-title>
+    <ion-title>Boleta</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -46,17 +46,23 @@
     <ion-list>
       <ion-item>
         <ion-label position="floating">Nombre repartidor</ion-label>
-        <ion-input formControlName="nombre_repartidor"></ion-input>
+        <ion-label>{{ pedidoForm.get('nombre_repartidor')?.value }}</ion-label>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Patente vehículo</ion-label>
-        <ion-input formControlName="patente"></ion-input>
+        <ion-label>{{ pedidoForm.get('patente')?.value }}</ion-label>
       </ion-item>
     </ion-list>
   </form>
 
-  <ion-button expand="block" color="primary" (click)="actualizarPedido()">
-    Completar Datos
+  <!-- Botón para actualizar el estado a 'Entregado' -->
+  <ion-button expand="block" color="primary" (click)="actualizarPedido1()">
+    Entregado
+  </ion-button>
+
+  <!-- Botón para actualizar el estado a 'Cancelado' -->
+  <ion-button expand="block" color="danger" (click)="actualizarPedido2()">
+    Cancelado
   </ion-button>
 </ion-content>

@@ -16,8 +16,8 @@ export class RealizarPedidoPage implements OnInit {
   productos: producto[] = [];
   solicitud: solicitud = {
     nombre_usuario: 'Dario_user',
-    direccion: '',
-    numtelefonico: '',
+    direccion: 'Los alelies 555',
+    numtelefonico: '9 98529705',
     detalle_pedido: [],
     metodo_pago: 0,
     hora_ini: new Date(),

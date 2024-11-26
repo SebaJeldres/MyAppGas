@@ -13,11 +13,6 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Estado: </ion-label>
-        <ion-input formControlName="estado_soli"></ion-input>
-      </ion-item>
-
-      <ion-item>
         <ion-label>Monto Total: </ion-label>
         <ion-input formControlName="monto_total"></ion-input>
       </ion-item>
@@ -52,25 +47,12 @@
         <ion-input formControlName="detalle_solicitud"></ion-input>
       </ion-item>
 
-      <ion-item>
-        <ion-label>Nombre Repartidor: </ion-label>
-        <ion-input formControlName="direccion_entrega"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Distribuidora: </ion-label>
-        <ion-input formControlName="direccion_entrega"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>patente: </ion-label>
-        <ion-input formControlName="direccion_entrega"></ion-input>
-      </ion-item>
 
     </ion-list>
   </form>
 
-  <ion-button>Aceptar</ion-button>
+  <ion-button (click)="crearPedido()">Aceptar</ion-button>
   <ion-button (click)="CancelarSolicitud()">Rechazar</ion-button>
+
 </ion-content>
 

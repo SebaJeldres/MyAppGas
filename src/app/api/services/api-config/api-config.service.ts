@@ -25,7 +25,7 @@ export class ApiConfigService {
     return throwError(() => error);
   }
 
-  get<T>(path: string, params?: HttpParams): Observable<HttpResponse<T>> {
+  get<T>(path: string, params: HttpParams): Observable<HttpResponse<T>> {
     return this.http.get<T>(`${this.baseUrl}${path}`, { headers: this.getHeaders(), observe: 'response', params })
       .pipe(
         catchError((error) => {

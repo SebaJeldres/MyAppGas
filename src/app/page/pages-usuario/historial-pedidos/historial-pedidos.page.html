@@ -3,40 +3,56 @@
     <ion-buttons slot="start">
       <ion-back-button default-href="['/login']"></ion-back-button>
     </ion-buttons>
-    <ion-title>historial-pedidos</ion-title>
+    <ion-title>Historial de Pedidos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Historial de Pedidos Cancelados</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content padding>
-    <ion-card *ngIf="solicitudesCanceladas.length > 0">
-      <ion-card-header>
-        <ion-card-title>Pedidos Cancelados</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-list>
-          <ion-item *ngFor="let solicitud of solicitudesCanceladas">
-            <ion-label>
-              <h2>ID: {{ solicitud.id }}</h2>
-              <p>Estado: {{ solicitud.estado_soli }}</p>
-              <p>Monto: {{ solicitud.monto_total | currency }}</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
-  
-    <ion-card *ngIf="solicitudesCanceladas.length === 0">
-      <ion-card-header>
-        <ion-card-title>No hay pedidos cancelados</ion-card-title>
-      </ion-card-header>
-    </ion-card>
-  </ion-content>
-  
+<ion-content [fullscreen]="true" padding>
+  <ion-card *ngIf="solicitudesCanceladas.length > 0">
+    <ion-card-header>
+      <ion-card-title>Pedidos Cancelados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let solicitud of solicitudesCanceladas">
+          <ion-label>
+            <h2>ID: {{ solicitud.id }}</h2>
+            <p>Estado: {{ solicitud.estado_soli }}</p>
+            <p>Monto: {{ solicitud.monto_total | currency }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="solicitudesCanceladas.length === 0">
+    <ion-card-header>
+      <ion-card-title>No hay pedidos cancelados</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <br>
+
+  <ion-card *ngIf="pedidosEntregados.length > 0">
+    <ion-card-header>
+      <ion-card-title>Pedidos Entregados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let pedido of pedidosEntregados">
+          <ion-label>
+            <h2>ID: {{ pedido.id }}</h2>
+            <p>Estado: {{ pedido.estado }}</p>
+            <p>Monto: {{ pedido.monto_total | currency }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="pedidosEntregados.length === 0">
+    <ion-card-header>
+      <ion-card-title>No hay pedidos entregados</ion-card-title>
+    </ion-card-header>
+  </ion-card>
 </ion-content>
