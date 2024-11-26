@@ -24,6 +24,7 @@ export class CuentaRepartidorPage implements OnInit {
     if (navigation?.extras?.state) {
       this.username = navigation.extras.state['username'];
       this.rol = navigation.extras.state['rol'];
+      console.log('Rol recibido:', this.rol);
       this.nombre = navigation.extras.state['nombre'];
       this.apellido = navigation.extras.state['apellido'];
       this.correo = navigation.extras.state['correo'];

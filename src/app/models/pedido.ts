@@ -10,6 +10,7 @@ export interface Pedido {
     metodo_pago: string;
     direccion: string;
     num_telefonico: string;
+    hora_ini: Date;
     estado: string; // Estado con las opciones específicas
   }
   

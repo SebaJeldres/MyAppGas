@@ -51,7 +51,7 @@
     </ion-list>
   </form>
 
-  <ion-button (click)="crearPedido()">Aceptar</ion-button>
+  <ion-button *ngIf="rol === 'distribuidora'" (click)="crearPedido()">Aceptar</ion-button>
   <ion-button (click)="CancelarSolicitud()">Rechazar</ion-button>
 
 </ion-content>

@@ -89,7 +89,7 @@
           <p><strong>Usuario:</strong> {{ solicitud.nombre_usuario }}</p>
           <p><strong>Monto Total:</strong> {{ solicitud.monto_total | currency }}</p>
         </ion-label>
-        <ion-button class="button-detalle" >
+        <ion-button class="button-detalle" (click)="irADetalleSolicitud(solicitud)">
           Ver detalle
         </ion-button>
       </ion-item>
@@ -112,7 +112,7 @@
           <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
           <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
         </ion-label>
-        <ion-button class="button-detalle" >
+        <ion-button class="button-detalle" (click)="irABoleta(pedido)" >
           Ver detalle
         </ion-button>
       </ion-item>
@@ -135,7 +135,7 @@
           <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
           <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
         </ion-label>
-        <ion-button class="button-detalle" >
+        <ion-button class="button-detalle" (click)="irABoleta(pedido)">
           Ver detalle
         </ion-button>
       </ion-item>
@@ -157,7 +157,7 @@
           <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
           <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
         </ion-label>
-        <ion-button class="button-detalle" >
+        <ion-button class="button-detalle" (click)="irADetallePedido(pedido)">
           Ver detalle
         </ion-button>
       </ion-item>
@@ -178,7 +178,7 @@
           <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
           <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
         </ion-label>
-        <ion-button class="button-detalle" >
+        <ion-button class="button-detalle" (click)="irABoleta(pedido)">
           Ver detalle
         </ion-button>
       </ion-item>
@@ -200,7 +200,7 @@
           <p><strong>Usuario:</strong> {{ solicitud.nombre_usuario }}</p>
           <p><strong>Monto Total:</strong> {{ solicitud.monto_total | currency }}</p>
         </ion-label>
-        <ion-button class="button-detalle" >
+        <ion-button class="button-detalle" (click)="irADetalleSolicitud(solicitud)">
           Ver detalle
         </ion-button>
       </ion-item>

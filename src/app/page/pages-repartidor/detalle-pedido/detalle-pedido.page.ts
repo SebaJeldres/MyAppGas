@@ -11,7 +11,7 @@ import { PedidoService } from 'src/app/api/services/pedido/pedido.service';
 })
 export class DetallePedidoPage implements OnInit {
   pedidoForm: FormGroup;
-
+  username: string | null = null;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -36,15 +36,18 @@ export class DetallePedidoPage implements OnInit {
   ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
+      this.username = navigation.extras.state['rol'];
+    }
+    if (navigation?.extras?.state) {
       const pedido = navigation.extras.state['pedido'];
       if (pedido) {
         this.pedidoForm.patchValue({
           id: pedido.id,
           monto_total: pedido.monto_total,
           nombre_usuario: pedido.nombre_usuario,
-          direccion_entrega: pedido.direccion_entrega,
+          direccion_entrega: pedido.direccion,
           metodo_pago: pedido.metodo_pago,
-          numtelefonico: pedido.numtelefonico,
+          numtelefonico: pedido.num_telefonico,
           hora_ini: pedido.hora_ini,
           detalle_pedido: pedido.detalle_pedido,
           nombre_repartidor: pedido.nombre_repartidor || '', // Campo opcional
@@ -60,7 +63,7 @@ export class DetallePedidoPage implements OnInit {
   
     if (pedidoId && nuevaPatente) {
       this.pedidoService
-        .actualizarPedido(pedidoId, { patente: nuevaPatente, estado: 'En Camino' })
+        .actualizarPedido(pedidoId, { patente: nuevaPatente, estado: 'Camino' })
         .subscribe({
           next: async () => {
             const alert = await this.alertController.create({

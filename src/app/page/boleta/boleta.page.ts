@@ -12,6 +12,7 @@ import { Pedido } from 'src/app/models/pedido'; // Asegúrate de importar la int
 })
 export class BoletaPage implements OnInit {
   pedidoForm: FormGroup;
+  rol: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,18 +39,24 @@ export class BoletaPage implements OnInit {
   ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
+      this.rol = navigation.extras.state['rol'];
+      console.log('Rol recibido:', this.rol);
+
+    }
+
+    if (navigation?.extras?.state) {
       const pedido = navigation.extras.state['pedido'];
       if (pedido) {
         this.pedidoForm.patchValue({
           id: pedido.id,
           monto_total: pedido.monto_total,
           nombre_usuario: pedido.nombre_usuario,
-          direccion_entrega: pedido.direccion_entrega,
-          metodo_pago: pedido.metodo_pago,
-          numtelefonico: pedido.numtelefonico,
+          direccion_entrega: pedido.direccion,
           hora_ini: pedido.hora_ini,
+          numtelefonico: pedido.num_telefonico,
           detalle_pedido: pedido.detalle_pedido,
           nombre_repartidor: pedido.nombre_repartidor,
+          metodo_pago: pedido.metodo_pago,
           patente: pedido.patente,
         });
       }

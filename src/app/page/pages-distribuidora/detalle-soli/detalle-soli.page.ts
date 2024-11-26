@@ -12,6 +12,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class DetalleSoliPage implements OnInit {
   solicitudForm: FormGroup;
+  rol: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,7 +38,14 @@ export class DetalleSoliPage implements OnInit {
   }
 
   ngOnInit() {
+    
     const navigation = this.router.getCurrentNavigation();
+
+    if (navigation?.extras?.state) {
+      this.rol = navigation.extras.state['rol'];
+      console.log('Rol recibido:', this.rol);
+
+    }
     if (navigation?.extras?.state) {
       const solicitud = navigation.extras.state['solicitud'];
       if (solicitud) {
@@ -77,8 +85,9 @@ async crearPedido() {
     detalle_pedido: this.solicitudForm.get('detalle_solicitud')?.value,
     metodo_pago: this.solicitudForm.get('metodo_pago')?.value,
     direccion: this.solicitudForm.get('direccion_entrega')?.value,
+    hora_ini: this.solicitudForm.get('hora_ini')?.value,
     num_telefonico: this.solicitudForm.get('numtelefonico')?.value,
-    estado: 'espera', // Estado inicial del pedido
+    estado: 'Espera', // Estado inicial del pedido
   };
 
   console.log('Enviando pedido:', nuevoPedido);

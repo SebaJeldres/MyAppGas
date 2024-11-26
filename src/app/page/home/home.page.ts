@@ -143,20 +143,20 @@ export class HomePage implements OnInit {
 
   irADetalleSolicitud(solicitud: any) {
     this.router.navigate(['detalle-soli'], {
-      state: { solicitud }, // Enviamos toda la información de la solicitud
+      state: { solicitud, id: this.id, rol: this.rol}, // Enviamos toda la información de la solicitud
     });
   }
 
   // Id a Repartidor
   irADetallePedido(pedido: any) {
     this.router.navigate(['detalle-pedido'], {
-      state: { pedido }, // Enviamos toda la información de la solicitud
+      state: { pedido, id: this.id, rol: this.rol, nombre_user: this.username}, // Enviamos toda la información de la solicitud
     });
   }
 
   irABoleta(pedido: any) {
     this.router.navigate(['boleta'], {
-      state: { pedido }, // Enviamos toda la información de la solicitud
+      state: { pedido, id: this.id,rol: this.rol }, // Enviamos toda la información de la solicitud
     });
   }
 
