@@ -27,7 +27,7 @@ export class LoginUsersService {
         id: "2",
         username: "Jose_Repartidor",
         password: this.encryptPassword('Jose1'),
-        rol: "Repartidor",
+        rol: "repartidor",
         Nombre: "Jose",
         apellido: "Gonzales",
         Correo: "Jose.gonzales@gmail.com",
@@ -38,7 +38,7 @@ export class LoginUsersService {
         id: "3", // Cambiar de punto y coma a coma
         username: "Carlos_admin",
         password: this.encryptPassword('Carlos1'),
-        rol: "Distribuidora",
+        rol: "distribuidora",
         Nombre: "Carlos",
         apellido: "Dominguez",
         Correo: "Carlos.dominguez@gmail.com",

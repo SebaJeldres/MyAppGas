@@ -30,24 +30,24 @@
       </ion-item>
 
       <!-- Opciones para el rol "repartidor" -->
-      <ion-item *ngIf="rol === 'Repartidor'">
+      <ion-item *ngIf="rol === 'repartidor'">
         <ion-button (click)="irAPerfilRepartidor()" [routerLink]="['/cuenta-repartidor']">Perfil</ion-button>
       </ion-item>
-      <ion-item *ngIf="rol === 'Repartidor'">
+      <ion-item *ngIf="rol === 'repartidor'">
         <ion-button (click)="irAInformacionVehiculo()" [routerLink]="['/informacion-vehiculo']">Informacion Vehiculo</ion-button>
       </ion-item>
-      <ion-item *ngIf="rol === 'Repartidor'">
+      <ion-item *ngIf="rol === 'repartidor'">
         <ion-button (click)="irAHistorialEntregas()" [routerLink]="['/historial-entregas']">Historial de entregas</ion-button>
       </ion-item>
 
       <!-- Opciones para el rol "distribuidora" -->
-      <ion-item *ngIf="rol === 'Distribuidora'">
+      <ion-item *ngIf="rol === 'distribuidora'">
         <ion-button (click)="irAPerfilDistribuidora()" [routerLink]="['/cuenta-distribuidora']">Info Distribuidora</ion-button>
       </ion-item>
-      <ion-item *ngIf="rol === 'Distribuidora'">
+      <ion-item *ngIf="rol === 'distribuidora'">
         <ion-button (click)="irAGestionarProductos()" [routerLink]="['/gestionar-productos']">Gestionar productos</ion-button>
       </ion-item>
-      <ion-item *ngIf="rol === 'Distribuidora'">
+      <ion-item *ngIf="rol === 'distribuidora'">
         <ion-button (click)="irAHistorialVentas()" [routerLink]="['/historial-ventas']">Historial ventas</ion-button>
       </ion-item>
       <ion-item>
@@ -75,20 +75,67 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Pedidos en camino (para todos los usuarios) -->
-<ion-card>
+<!-- Gets de rol usuario-->
+
+<ion-card *ngIf="rol === 'usuario'">
   <ion-card-header>
-    <ion-card-title>Pedidos en camino</ion-card-title>
+    <ion-card-title>Pedidos en espera</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <p *ngIf="solicitudesEnEspera.length === 0">No hay pedidos en espera</p>
+    <ion-list *ngIf="solicitudesEnEspera.length > 0">
+      <ion-item *ngFor="let solicitud of solicitudesEnEspera">
+        <ion-label>
+          <p><strong>Usuario:</strong> {{ solicitud.nombre_usuario }}</p>
+          <p><strong>Monto Total:</strong> {{ solicitud.monto_total | currency }}</p>
+        </ion-label>
+        <ion-button class="button-detalle" >
+          Ver detalle
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
+
+
+<br>
+
+<ion-card *ngIf="rol === 'usuario'">
+  <ion-card-header>
+    <ion-card-title>Pedidos en Camino</ion-card-title>
   </ion-card-header>
   <ion-card-content>
     <p *ngIf="pedidosEnCamino.length === 0">No hay pedidos en camino</p>
-    <ion-list>
+    <ion-list *ngIf="pedidosEnCamino.length > 0">
       <ion-item *ngFor="let pedido of pedidosEnCamino">
         <ion-label>
           <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
-          <p><strong>Monto Total:</strong> ${{ pedido.monto_total }}</p>
+          <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
         </ion-label>
-        <ion-button (click)="irABoleta(pedido)" class="button-detalle">
+        <ion-button class="button-detalle" >
+          Ver detalle
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
+
+
+<br>
+<!-- Gets de rol repartidor-->
+<ion-card *ngIf="rol === 'repartidor'">
+  <ion-card-header>
+    <ion-card-title>Entregas en proceso</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <p *ngIf="pedidosEnCamino.length === 0">No hay entregas en proceso</p>
+    <ion-list *ngIf="pedidosEnCamino.length > 0">
+      <ion-item *ngFor="let pedido of pedidosEnCamino">
+        <ion-label>
+          <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
+          <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
+        </ion-label>
+        <ion-button class="button-detalle" >
           Ver detalle
         </ion-button>
       </ion-item>
@@ -98,98 +145,69 @@
 
 <br>
 
-  <!-- Solicitudes en proceso (solo para usuario) -->
-  <ion-card *ngIf="rol === 'usuario'">
-    <ion-card-header>
-      <ion-card-title>Solicitudes en proceso</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-card *ngIf="rol === 'usuario'">
-        <ion-card-header>
-          <ion-card-title>Solicitudes pendientes</ion-card-title>
-          <ion-list>
-            <ion-item *ngFor="let solicitud of solicitudes">
-              <ion-label>{{ solicitud.id }} {{ solicitud.estado_soli }} ${{ solicitud.monto_total }}</ion-label>
-              <ion-button (click)="irADetalleSolicitud(solicitud)" class="button-detalle">
-                Ver detalle
-              </ion-button>
-            </ion-item>
-          </ion-list>
-        </ion-card-header>
-      </ion-card>
-    </ion-card-content>
-  </ion-card>
+<ion-card *ngIf="rol === 'repartidor'">
+  <ion-card-header>
+    <ion-card-title>Pedidos nuevos</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <p *ngIf="pedidosEnEspera.length === 0">No hay nuevos pedidos</p>
+    <ion-list *ngIf="pedidosEnEspera.length > 0">
+      <ion-item *ngFor="let pedido of pedidosEnEspera">
+        <ion-label>
+          <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
+          <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
+        </ion-label>
+        <ion-button class="button-detalle" >
+          Ver detalle
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
 
-  <!-- Pedidos en proceso (solo para usuario) -->
-  <ion-card *ngIf="rol === 'usuario'">
-    <ion-card-header>
-      <ion-card-title>Pedidos en proceso</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p *ngIf="pedidosFiltrados.length === 0">No hay pedidos en proceso</p>
-      <ion-card *ngFor="let pedido of pedidosFiltrados">
-        <ion-card-header>
-          <ion-card-title>{{ pedido.nombre_usuario }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <p>Estado: {{ pedido.estado }}</p>
-          <p>Monto total: ${{ pedido.monto_total }}</p>
-        </ion-card-content>
-      </ion-card>
-    </ion-card-content>
-  </ion-card>
+<!-- GEts para rol distribuidora-->
+<ion-card *ngIf="rol === 'distribuidora'">
+  <ion-card-header>
+    <ion-card-title>Entregas en proceso</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <p *ngIf="pedidosEnCamino.length === 0">No hay entregas en proceso</p>
+    <ion-list *ngIf="pedidosEnCamino.length > 0">
+      <ion-item *ngFor="let pedido of pedidosEnCamino">
+        <ion-label>
+          <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
+          <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
+        </ion-label>
+        <ion-button class="button-detalle" >
+          Ver detalle
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
 
-  <!-- Último pedido (solo para usuario) -->
-  <ion-card *ngIf="rol === 'usuario'">
-    <ion-card-header>
-      <ion-card-title>Último pedido</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p>No ha realizado pedidos</p>
-    </ion-card-content>
-  </ion-card>
+<br>
 
-  <!-- Pedidos en proceso (solo para repartidor) -->
-  <ion-card *ngIf="rol === 'Repartidor'">
-    <ion-card-header>
-      <ion-card-title>Entregas en proceso</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list>
-        <ion-item class="item-pedido" *ngFor="let pedido of pedidosFiltrados">
-          <ion-label>{{ pedido.nombre_usuario }} - ${{ pedido.monto_total }}</ion-label>
-          <ion-button (click)="irADetallePedido(pedido)" class="button-detalle">
-            Ver detalle
-          </ion-button>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+<ion-card *ngIf="rol === 'distribuidora'">
+  <ion-card-header>
+    <ion-card-title>Solicitudes pendientes</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <p *ngIf="solicitudesEnEspera.length === 0">No hay solicitudes pendientes</p>
+    <ion-list *ngIf="solicitudesEnEspera.length > 0">
+      <ion-item *ngFor="let solicitud of solicitudesEnEspera">
+        <ion-label>
+          <p><strong>Usuario:</strong> {{ solicitud.nombre_usuario }}</p>
+          <p><strong>Monto Total:</strong> {{ solicitud.monto_total | currency }}</p>
+        </ion-label>
+        <ion-button class="button-detalle" >
+          Ver detalle
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
 
-  <!-- Solicitudes pendientes (solo para distribuidora) -->
-  <ion-card *ngIf="rol === 'Distribuidora'">
-    <ion-card-header>
-      <ion-card-title>Solicitudes pendientes</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list>
-        <ion-item class="item-soli" *ngFor="let solicitud of solicitudes">
-          <ion-label>{{ solicitud.estado_soli }} - ${{ solicitud.monto_total }}</ion-label>
-          <ion-button (click)="irADetalleSolicitud(solicitud)" class="button-detalle">
-            Ver detalle
-          </ion-button>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+<br>
 
-  <!-- Pedidos en proceso (solo para distribuidora) -->
-  <ion-card *ngIf="rol === 'Distribuidora'">
-    <ion-card-header>
-      <ion-card-title>Pedidos en proceso</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p>No hay pedidos en proceso</p>
-    </ion-card-content>
-  </ion-card>
 </ion-content>

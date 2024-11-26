@@ -18,64 +18,15 @@ export class PedidoService {
     const params = new HttpParams().set('select', '*');
     return this.apiService.get<Pedido[]>(this.path, params).pipe(
       map((response) => {
-        const filteredBody = response.body?.filter(
-          (pedido) => pedido.estado === null
-        );
-        return new HttpResponse({
-          body: filteredBody,
-          headers: response.headers,
-          status: response.status,
-          statusText: response.statusText,
-        });
-      }),
-      catchError((error) => {
-        console.error('Error al obtener los pedidos:', error);
-        return throwError(() => new Error('Error al obtener los pedidos.'));
-      })
-    );
-  }
+        console.log(response);
+        const filteredBody = response.body; 
 
-  // Método para obtener pedidos filtrados por estado 'espera' y repartidor 'Jose'
-  obtener_pedidosFiltrados(): Observable<HttpResponse<Pedido[]>> {
-    const params = new HttpParams().set('select', '*');
-    return this.apiService.get<Pedido[]>(this.path, params).pipe(
-      map((response) => {
-        // Filtramos por estado 'espera' y nombre_repartidor 'Jose'
-        const filteredBody = response.body?.filter(
-          (pedido) => pedido.estado === 'espera' 
-        );
         return new HttpResponse({
           body: filteredBody,
           headers: response.headers,
           status: response.status,
           statusText: response.statusText,
         });
-      }),
-      catchError((error) => {
-        console.error('Error al obtener los pedidos filtrados:', error);
-        return throwError(() => new Error('Error al obtener los pedidos filtrados.'));
-      })
-    );
-  }
-
-  obtener_pedidosFiltrados2(): Observable<HttpResponse<Pedido[]>> {
-    const params = new HttpParams().set('select', '*');
-    return this.apiService.get<Pedido[]>(this.path, params).pipe(
-      map((response) => {
-        // Filtramos por estado 'espera' y nombre_repartidor 'Jose'
-        const filteredBody = response.body?.filter(
-          (pedido) => pedido.estado === 'En Camino' 
-        );
-        return new HttpResponse({
-          body: filteredBody,
-          headers: response.headers,
-          status: response.status,
-          statusText: response.statusText,
-        });
-      }),
-      catchError((error) => {
-        console.error('Error al obtener los pedidos filtrados:', error);
-        return throwError(() => new Error('Error al obtener los pedidos filtrados.'));
       })
     );
   }
@@ -90,7 +41,6 @@ export class PedidoService {
       })
     );
   }
-    // Método para actualizar un pedido existente
     // Método para actualizar un pedido existente
 actualizarPedido(id: string, cambios: { patente: string; estado: string }): Observable<Pedido> {
   return this.apiService.patch<Pedido>(`pedido?id=eq.${id}`, cambios).pipe(

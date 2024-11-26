@@ -11,10 +11,10 @@ import { Pedido } from 'src/app/models/pedido';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  solicitudes: solicitud[] = [];
-  solicitudesCanceladas: solicitud[] = [];
-  pedidosFiltrados: Pedido[] = [];
-  pedidosEnCamino: Pedido[] = [];  
+  solicitudesEnEspera: solicitud[] = []
+  pedidosEnCamino: Pedido[] = []
+  pedidosEnEspera: Pedido[] = [];
+    
   id: string | null = null;
   username: string | null = null;
   rol: string | null = null;
@@ -43,40 +43,43 @@ export class HomePage implements OnInit {
       this.NumTelefonico = navigation.extras.state['numTelefonico'] || '';
       this.Direccion = navigation.extras.state['Direccion'] || '';
     }
-
-    // Obtener las solicitudes del servicio
+    this.obtenerSolicitudesEnEspera();
+    this.obtenerPedidosEnEspera();
+    this.obtenerPedidosEnCamino();
+  }
+// Obtener las solicitudes del servicio filtrados por estado: espera (Get para rol usuario y distribuidora)
+  obtenerSolicitudesEnEspera() {
     this.SolicitudService.obtener_solicitud().subscribe((response: any) => {
-      this.solicitudes = response.body
-        .filter((solicitud: solicitud) => solicitud.estado_soli === 'espera')
-        .map((solicitud: solicitud) => ({
-          ...solicitud,
-        }));
-
-      // Filtrar las solicitudes canceladas
-      this.solicitudesCanceladas = response.body
-        .filter((solicitud: solicitud) => solicitud.estado_soli === 'Cancelado' && solicitud.nombre_usuario === 'Dario_user')
-        .map((solicitud: solicitud) => ({
-          ...solicitud,
-        }));
-    });
-
-    // Obtener los pedidos filtrados
-    this.PedidoService.obtener_pedidosFiltrados().subscribe((response: any) => {
-      this.pedidosFiltrados = response.body
-        .map((pedido: Pedido) => ({
-          ...pedido,
-        }));
-    });
-
-    this.PedidoService.obtener_pedidosFiltrados2().subscribe((response: any) => {
-      this.pedidosEnCamino = response.body
-        .map((pedido: Pedido) => ({
-          ...pedido,
-        }));
+      this.solicitudesEnEspera = response.body.filter(
+        (solicitud: solicitud) => solicitud.estado_soli === 'espera'
+      );
     });
   }
 
-  // Método para navegar a la página de perfil de usuario
+// Obtener los pedidos filtrados por estado: espera (Get para repartidor)
+    obtenerPedidosEnEspera() {
+      this.PedidoService.obtener_pedido().subscribe((response: any) => {
+        this.pedidosEnEspera = response.body
+        .filter((pedido: Pedido) => pedido.estado === 'Espera')
+          .map((pedido: Pedido) => ({
+            ...pedido,
+          }));
+      });
+    }
+
+// Obtener los pedidos filtrados por estado: En Camino (Get para todos los roles)
+    obtenerPedidosEnCamino() {
+      this.PedidoService.obtener_pedido().subscribe((response: any) => {
+        this.pedidosEnCamino = response.body
+        .filter((pedido: Pedido) => pedido.estado === 'Camino')
+           .map((pedido: Pedido) => ({
+             ...pedido,
+           }));
+           console.log('Pedidos filtrados (En Camino):', this.pedidosEnCamino);
+        });
+    }
+
+// Método para navegar a la página de perfil de usuario
   irAPerfilUser() {
     this.router.navigate(['cuenta-usuario'], {
       state: {
