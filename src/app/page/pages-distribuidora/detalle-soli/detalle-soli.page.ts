@@ -106,7 +106,7 @@ async crearPedido() {
         // Actualizar el estado de la solicitud a "aceptado"
         const solicitudId = this.solicitudForm.get('id')?.value;
         if (solicitudId) {
-          await this.solicitudService.actualizarEstadoSolicitud(solicitudId, 'aceptado').toPromise();
+          await this.solicitudService.actualizarEstadoSolicitud(solicitudId, 'Aceptado').toPromise();
         }
       },
       error: async (error) => {

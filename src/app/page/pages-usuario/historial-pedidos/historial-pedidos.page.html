@@ -8,51 +8,59 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" padding>
-  <ion-card *ngIf="solicitudesCanceladas.length > 0">
+
+  <ion-card>
     <ion-card-header>
-      <ion-card-title>Pedidos Cancelados</ion-card-title>
+      <ion-card-title>Solicitudes Cancelados</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let solicitud of solicitudesCanceladas">
+      <p *ngIf="solicitudesRechazadas.length === 0">No hay solicitudes canceladas</p>
+      <ion-list *ngIf="solicitudesRechazadas.length > 0">
+        <ion-item *ngFor="let solicitud of solicitudesRechazadas">
           <ion-label>
-            <h2>ID: {{ solicitud.id }}</h2>
-            <p>Estado: {{ solicitud.estado_soli }}</p>
-            <p>Monto: {{ solicitud.monto_total | currency }}</p>
+            <p><strong>Usuario:</strong> {{ solicitud.nombre_usuario }}</p>
+            <p><strong>Monto Total:</strong> {{ solicitud.monto_total | currency }}</p>
+            <p><strong>Fecha:</strong> {{ solicitud.hora_ini }}</p>
           </ion-label>
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="solicitudesCanceladas.length === 0">
-    <ion-card-header>
-      <ion-card-title>No hay pedidos cancelados</ion-card-title>
-    </ion-card-header>
-  </ion-card>
-
-  <br>
-
-  <ion-card *ngIf="pedidosEntregados.length > 0">
+  <ion-card>
     <ion-card-header>
       <ion-card-title>Pedidos Entregados</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-list>
+      <p *ngIf="pedidosEntregados.length === 0">No hay pedidos entregados</p>
+      <ion-list *ngIf="pedidosEntregados.length > 0">
         <ion-item *ngFor="let pedido of pedidosEntregados">
           <ion-label>
-            <h2>ID: {{ pedido.id }}</h2>
-            <p>Estado: {{ pedido.estado }}</p>
-            <p>Monto: {{ pedido.monto_total | currency }}</p>
+            <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
+            <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
+            <p><strong>Fecha:</strong> {{ pedido.hora_ini }}</p>
           </ion-label>
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="pedidosEntregados.length === 0">
+  <ion-card>
     <ion-card-header>
-      <ion-card-title>No hay pedidos entregados</ion-card-title>
+      <ion-card-title>Pedidos Cancelados</ion-card-title>
     </ion-card-header>
+    <ion-card-content>
+      <p *ngIf="pedidosCancelados.length === 0">No hay pedidos cancelados</p>
+      <ion-list *ngIf="pedidosCancelados.length > 0">
+        <ion-item *ngFor="let pedido of pedidosCancelados">
+          <ion-label>
+            <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
+            <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
+            <p><strong>Fecha:</strong> {{ pedido.hora_ini }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
   </ion-card>
+
 </ion-content>

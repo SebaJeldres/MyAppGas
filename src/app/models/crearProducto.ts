@@ -1,7 +1,7 @@
 export interface CrearProducto {
+  id?: string;
   sku: string;
   nombre: string; 
- compania: string;
   tipo: string;
   kilos: number | null; 
   precio: number | null;

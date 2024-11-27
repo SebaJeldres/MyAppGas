@@ -8,5 +8,45 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Pedidos Vendidos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p *ngIf="pedidosEntregados.length === 0">No hay pedidos Cancelados</p>
+      <ion-list *ngIf="pedidosEntregados.length > 0">
+        <ion-item *ngFor="let pedido of pedidosEntregados">
+          <ion-label>
+            <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
+            <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
+            <p><strong>Fecha:</strong> {{ pedido.hora_ini }}</p>
+            <p><strong>Patente:</strong> {{ pedido.patente }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Pedidos Cancelados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p *ngIf="pedidosCancelados.length === 0">No hay pedidos Cancelados</p>
+      <ion-list *ngIf="pedidosCancelados.length > 0">
+        <ion-item *ngFor="let pedido of pedidosCancelados">
+          <ion-label>
+            <p><strong>Usuario:</strong> {{ pedido.nombre_usuario }}</p>
+            <p><strong>Monto Total:</strong> {{ pedido.monto_total | currency }}</p>
+            <p><strong>Fecha:</strong> {{ pedido.hora_ini }}</p>
+            <p><strong>Patente:</strong> {{ pedido.patente }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+
   
 </ion-content>

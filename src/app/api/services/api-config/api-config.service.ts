@@ -57,6 +57,12 @@ export class ApiConfigService {
       catchError(this.handleError)
     );
   }
+  delete<T>(path: string): Observable<HttpResponse<T>> {
+    return this.http.delete<T>(`${this.baseUrl}${path}`, {
+      headers: this.getHeaders(),
+      observe: 'response',
+    }).pipe(catchError(this.handleError));
+  }
   
 }
 

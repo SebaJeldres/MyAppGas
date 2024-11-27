@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Realizar Pedido</ion-title>
     <ion-buttons slot="end">
-      <ion-button id="open-modal"> Realizar pedido </ion-button>
+      <ion-button id="open-modal">Realizar pedido</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -24,6 +24,16 @@
     </ion-item>
   </ion-list>
 
+  <!-- Selección del método de pago -->
+  <ion-item>
+    <ion-label>Método de pago</ion-label>
+    <ion-select [(ngModel)]="solicitud.metodo_pago" interface="popover">
+      <ion-select-option value="Efectivo">Efectivo</ion-select-option>
+      <ion-select-option value="Debito">Débito</ion-select-option>
+      <ion-select-option value="Credito">Crédito</ion-select-option>
+    </ion-select>
+  </ion-item>
+
   <!-- Mostrar el total del pedido -->
   <ion-item>
     <ion-label>Total: </ion-label>
@@ -41,4 +51,3 @@
     <ion-label>No hay productos disponibles.</ion-label>
   </ion-item>
 </ng-template>
-

@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Gestionar Productos</ion-title>
     <ion-buttons slot="end">
-      <ion-button id="open-modal"> Agregar Producto</ion-button>
+      <ion-button id="open-modal" (click)="abrirModal()">Agregar Producto</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -13,7 +13,22 @@
 <ion-content [fullscreen]="true">
   <ion-list *ngIf="productos.length > 0; else listaVacia">
     <ion-item *ngFor="let producto of productos">
-      <ion-label> Id:{{producto.id}} || {{producto.nombre}} {{producto.kilos}} {{producto.tipo}} || Precio: {{producto.precio}} || Stock:{{producto.stock}}</ion-label>
+      <ion-label>
+        Id: {{ producto.id }} || {{ producto.nombre }} {{ producto.kilos }} {{ producto.tipo }} ||
+        Precio: {{ producto.precio }} || Stock: {{ producto.stock }}
+      </ion-label>
+    
+      <ion-buttons slot="end" id="open-modal">
+        <!-- Botón de Modificar -->
+        <ion-button color="primary" (click)="abrirModalModificar(producto)">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <!-- Botón de Eliminar -->
+        <ion-button color="danger" (click)="eliminarProducto(producto.id ? producto.id : '')">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+
+      </ion-buttons>
     </ion-item>
   </ion-list>
 
@@ -27,16 +42,17 @@
     </ion-item>
   </ng-template>
 
+  <!-- Modal para agregar/modificar productos -->
   <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
-        <ion-toolbar> 
+        <ion-toolbar>
           <ion-buttons slot="start">
             <ion-button (click)="cancelar()">Cancelar</ion-button>
           </ion-buttons>
-          <ion-title>Nuevo Producto:</ion-title>
+          <ion-title>{{ modalTitulo }}</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="agregarProducto(nuevo_producto)" [strong]="true">Agregar</ion-button>
+            <ion-button (click)="guardarProducto()" [strong]="true">Guardar</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -59,14 +75,6 @@
         <ion-item>
           <ion-input label="Kilos" type="text" placeholder="Kilos" [(ngModel)]="nuevo_producto.kilos"></ion-input>
         </ion-item>
-        
-        <ion-item>
-          <ion-select label="Compañia" [(ngModel)]="nuevo_producto.compania" placeholder="Compañia">
-            <ion-select-option *ngFor="let compania of companias" [value]="compania.id">
-              {{ compania.nombre }}
-            </ion-select-option>
-          </ion-select>
-        </ion-item>        
       </ion-content>
     </ng-template>
   </ion-modal>

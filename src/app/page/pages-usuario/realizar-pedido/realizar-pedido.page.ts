@@ -19,7 +19,7 @@ export class RealizarPedidoPage implements OnInit {
     direccion: 'Los alelies 555',
     numtelefonico: '9 98529705',
     detalle_pedido: [],
-    metodo_pago: 0,
+    metodo_pago: '',
     hora_ini: new Date(),
     estado_soli: 'espera',
     monto_total: 0
@@ -52,14 +52,19 @@ export class RealizarPedidoPage implements OnInit {
     const productosSeleccionados = this.productos
       .filter((producto) => producto.cantidad && producto.cantidad > 0)
       .map((producto) => `${producto.id} ${producto.nombre} (${producto.cantidad})`);
-
+  
     if (productosSeleccionados.length === 0) {
       alert('Por favor, selecciona al menos un producto.');
       return;
     }
-
+  
+    if (this.solicitud.metodo_pago === null || this.solicitud.metodo_pago === undefined) {
+      alert('Por favor, selecciona un método de pago.');
+      return;
+    }
+  
     this.solicitud.detalle_pedido = productosSeleccionados;
-
+  
     this.solicitudService.crearSolicitud(this.solicitud).subscribe(
       (response: any) => {
         alert(`Pedido realizado por un total de $${this.total}`);
@@ -70,6 +75,7 @@ export class RealizarPedidoPage implements OnInit {
       }
     );
   }
+  
 
   async agregarSolicitud(nuevaSolicitud: crearSolicitud) {
     try {

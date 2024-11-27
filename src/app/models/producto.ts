@@ -1,10 +1,7 @@
-import { Compania } from './compania';
-
 export interface producto {
-  id: number;
-  sku: number; 
+  id?: string;
+  sku: string; 
   nombre: string;
-  compania: Compania | null;
   tipo: string;
   kilos: number; 
   precio: number; 

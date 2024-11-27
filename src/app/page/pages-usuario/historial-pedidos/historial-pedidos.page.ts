@@ -11,8 +11,9 @@ import { Pedido } from 'src/app/models/pedido';
 })
 export class HistorialPedidosPage implements OnInit {
 
-  solicitudesCanceladas: solicitud[] = [];
   pedidosEntregados: Pedido[] = [];
+  pedidosCancelados: Pedido[] = [];
+  solicitudesRechazadas: solicitud[] = [];
 
   constructor(
     private SolicitudService: SolicitudService, 
@@ -20,16 +21,33 @@ export class HistorialPedidosPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Obtener las solicitudes canceladas
-    this.SolicitudService.obtener_solicitud().subscribe((response: any) => {
-      // Filtrar solicitudes con estado 'Cancelado'
-      this.solicitudesCanceladas = response.body.filter((solicitud: solicitud) => solicitud.estado_soli === 'Cancelado');
-    });
 
-    // Obtener los pedidos entregados
+    this.obtenerPedidosEntregados();
+    this.obtenerPedidosCancelados();
+    this.obtenerSolicitudesRechazadas();
+  }
+
+  obtenerPedidosEntregados() {
     this.PedidoService.obtener_pedido().subscribe((response: any) => {
-      // Filtrar pedidos con estado 'Entregado'
-      this.pedidosEntregados = response.body.filter((pedido: Pedido) => pedido.estado === 'Entregado');
+      this.pedidosEntregados = response.body.filter(
+        (pedido: Pedido) => pedido.estado === 'Entregado'
+      );
+    });
+  }
+
+  obtenerPedidosCancelados() {
+    this.PedidoService.obtener_pedido().subscribe((response: any) => {
+      this.pedidosCancelados = response.body.filter(
+        (pedido: Pedido) => pedido.estado === 'Cancelado'
+      );
+    });
+  }
+
+  obtenerSolicitudesRechazadas() {
+    this.SolicitudService.obtener_solicitud().subscribe((response: any) => {
+      this.solicitudesRechazadas = response.body.filter(
+        (solicitud: solicitud) => solicitud.estado_soli === 'Cancelado'
+      );
     });
   }
 }
