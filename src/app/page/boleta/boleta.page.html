@@ -42,10 +42,11 @@
         <ion-label>{{ pedidoForm.get('detalle_pedido')?.value }}</ion-label>
       </ion-item>
     </ion-list>
+    
 
     <ion-list>
       <ion-item>
-        <ion-label >Nombre repartidor: </ion-label>
+        <ion-label>Nombre repartidor: </ion-label>
         <ion-label>{{ pedidoForm.get('nombre_repartidor')?.value }}</ion-label>
       </ion-item>
 
@@ -56,6 +57,11 @@
     </ion-list>
   </form>
 
+  <ion-label>Ubicacion Repartidor</ion-label>
+
+  <!-- Mapa -->
+  <div id="map" style="height: 400px; width: 100%;"></div>
+
   <!-- Botón para actualizar el estado a 'Entregado' -->
   <ion-button 
     expand="block" 
@@ -65,7 +71,6 @@
     Entregado
   </ion-button>
   
-
   <!-- Botón para actualizar el estado a 'Cancelado' -->
   <ion-button 
     expand="block" 

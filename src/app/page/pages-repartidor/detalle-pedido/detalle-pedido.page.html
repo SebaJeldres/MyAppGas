@@ -5,6 +5,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+
+
   <form [formGroup]="pedidoForm">
     <ion-list>
       <ion-item>
@@ -43,6 +45,11 @@
       </ion-item>
     </ion-list>
 
+    <ion-label>Ubicacion Pedido</ion-label>
+
+    <div id="map" style="height: 300px; width: 100%;"></div>
+
+    <!-- Campos para nombre repartidor y patente -->
     <ion-list>
       <ion-item>
         <ion-label position="floating">Nombre repartidor</ion-label>
@@ -56,6 +63,7 @@
     </ion-list>
   </form>
 
+  <!-- Botón para completar datos -->
   <ion-button expand="block" color="primary" (click)="actualizarPedido()">
     Completar Datos
   </ion-button>

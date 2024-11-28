@@ -21,7 +21,9 @@ export class LoginUsersService {
         apellido: "Osorio",
         Correo: "Dario.osorio@gmail.com",
         NumTelefonico: "+56 9 0786 4635",
-        Direccion: "Belloto norte, las parcelas, 555"
+        Direccion: "Belloto norte, las parcelas, 555",
+        latitude: -33.007182, // Coordenada inicial (Chile como ejemplo)
+        longitude: -71.498390,
       },
       {
         id: "2",
@@ -32,10 +34,12 @@ export class LoginUsersService {
         apellido: "Gonzales",
         Correo: "Jose.gonzales@gmail.com",
         NumTelefonico: "+56 9 6353 4477",
-        Direccion: "Belloto norte, las parcelas, 555"
+        Direccion: "Belloto norte, las parcelas, 555",
+        latitude: -33.007182, // Coordenada inicial (Chile como ejemplo)
+        longitude: -71.498390,
       },
       {
-        id: "3", // Cambiar de punto y coma a coma
+        id: "3",
         username: "Carlos_admin",
         password: this.encryptPassword('Carlos1'),
         rol: "distribuidora",
@@ -43,11 +47,12 @@ export class LoginUsersService {
         apellido: "Dominguez",
         Correo: "Carlos.dominguez@gmail.com",
         NumTelefonico: "+56 8898 9000",
-        Direccion: "Belloto norte, las parcelas, 555"
-      }
+        Direccion: "Belloto norte, las parcelas, 555",
+        latitude: -33.0469,
+        longitude: -71.6153,
+      },
     ];
   }
-  
 
   // Método para cifrar la contraseña
   private encryptPassword(password: string): string {
@@ -57,7 +62,7 @@ export class LoginUsersService {
     return encryptedPassword;
   }
 
-  // Método para verificar la contraseña
+  // Método para descifrar la contraseña
   private decryptPassword(encryptedPassword: string): string {
     console.log('Texto encriptado antes de desencriptar:', encryptedPassword);
     const bytes = CryptoJS.AES.decrypt(encryptedPassword, this.secretKey);
@@ -66,6 +71,7 @@ export class LoginUsersService {
     return originalPassword;
   }
 
+  // Buscar usuario por credenciales
   encontrar_usuario(userInfo: Users): Users | null {
     for (let usuario of this.lista_de_usuarios) {
       if (
@@ -77,5 +83,34 @@ export class LoginUsersService {
     }
     return null; // Devuelve null si no se encuentra el usuario
   }
-}
 
+  // Obtener usuario por ID
+  getUserById(userId: string): Users | null {
+    return this.lista_de_usuarios.find(user => user.id === userId) || null;
+  }
+
+  // Actualizar ubicación del usuario
+  updateUserLocation(userId: string, latitude: number, longitude: number): void {
+    const user = this.getUserById(userId);
+    if (user) {
+      user.latitude = latitude;
+      user.longitude = longitude;
+      console.log(`Ubicación actualizada para ${user.username}:`, { latitude, longitude });
+    }
+  }
+
+  // Simular movimiento del repartidor
+  simulateRepartidorMovement(repartidorId: string): void {
+    const repartidor = this.getUserById(repartidorId);
+    if (repartidor) {
+      setInterval(() => {
+        repartidor.latitude = (repartidor.latitude || 0) + Math.random() * 0.001;
+        repartidor.longitude = (repartidor.longitude || 0) + Math.random() * 0.001;
+        console.log(`Nueva ubicación del repartidor ${repartidor.username}:`, {
+          latitude: repartidor.latitude,
+          longitude: repartidor.longitude,
+        });
+      }, 5000); // Actualiza cada 5 segundos
+    }
+  }
+}

@@ -8,5 +8,7 @@ export interface Users{
     Correo: string;
     NumTelefonico: string;
     Direccion: string;
+    latitude?: number; // Coordenada de latitud
+  longitude?: number; // Coordenada de longitud
 
 }
