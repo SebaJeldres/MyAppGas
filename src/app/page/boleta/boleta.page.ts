@@ -1,31 +1,34 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { PedidoService } from 'src/app/api/services/pedido/pedido.service';
-import { LoginUsersService } from 'src/app/api/services/users/login-users.service';
+import { UserService } from 'src/app/api/services/user/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-boleta',
   templateUrl: './boleta.page.html',
   styleUrls: ['./boleta.page.scss'],
 })
-export class BoletaPage implements OnInit, AfterViewInit {
+export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
   pedidoForm: FormGroup;
   rol: string | null = null;
+  private isMapInitialized: boolean = false; // Bandera para verificar si el mapa está inicializado
+  private userLocationSubscription!: Subscription;
 
-  // Propiedades para el mapa y el marcador
+  private initialLocation: google.maps.LatLngLiteral = { lat: -33.4691, lng: -71.5771 }; // Default (Viña del Mar)
+
+  // Definir el mapa y el marcador como propiedades de la clase
   private map!: google.maps.Map;
   private marker!: google.maps.Marker;
-  private initialLocation: google.maps.LatLngLiteral = { lat: -33.4691, lng: -71.5771 }; // Viña del Mar, Centro
-  private isMapInitialized: boolean = false; // Bandera para verificar si el mapa está inicializado
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
     private pedidoService: PedidoService,
-    private loginUsersService: LoginUsersService,
+    private userService: UserService,
     private alertController: AlertController
   ) {
     this.pedidoForm = this.formBuilder.group({
@@ -65,10 +68,11 @@ export class BoletaPage implements OnInit, AfterViewInit {
           patente: pedido.patente,
         });
 
-        // Llamar para mostrar la ubicación del usuario solo si el mapa está inicializado
-        const repartidorId = '2'; // Aquí deberías obtener dinámicamente el ID del usuario (repartidor)
-        if (this.isMapInitialized) {
-          this.showUserLocation(repartidorId); // Llamar para mostrar la ubicación del usuario
+        // Actualizamos la ubicación inicial usando latitud y longitud del pedido
+        const latitud = pedido.latitud; // Asumimos que el pedido tiene latitud
+        const longitud = pedido.longitud; // Asumimos que el pedido tiene longitud
+        if (latitud && longitud) {
+          this.initialLocation = { lat: latitud, lng: longitud };
         }
       }
     }
@@ -80,64 +84,65 @@ export class BoletaPage implements OnInit, AfterViewInit {
   }
 
   private initMap(): void {
-    // Inicializamos el mapa de Google
     const mapOptions: google.maps.MapOptions = {
       center: this.initialLocation,
       zoom: 18,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
     };
 
-    this.map = new google.maps.Map(document.getElementById('map') as HTMLElement, mapOptions);
+    const mapElement = document.getElementById('map') as HTMLElement;
+    if (mapElement) {
+      this.map = new google.maps.Map(mapElement, mapOptions); // Asignamos el mapa a la propiedad
+      this.marker = new google.maps.Marker({ // Asignamos el marcador a la propiedad
+        position: this.initialLocation,
+        map: this.map,
+      });
+    }
 
-    // Creamos el marcador inicial en la ubicación de Viña del Mar
-    this.marker = new google.maps.Marker({
-      position: this.initialLocation,
-      map: this.map,
-      // Eliminamos la propiedad 'title' para que no aparezca texto sobre el marcador
-    });
-
-    // Marcamos el mapa como inicializado
     this.isMapInitialized = true;
   }
 
-  // Función para obtener y mostrar la ubicación del repartidor
   private showUserLocation(repartidorId: string): void {
     if (!this.isMapInitialized) {
-      console.error("El mapa no está inicializado.");
+      console.error('El mapa no está inicializado.');
       return;
     }
 
-    // Simulamos obtener la ubicación del usuario (deberías hacerlo con una API o WebSocket real)
-    const repartidor = this.loginUsersService.getUserById(repartidorId);
+    // Suscripción para obtener el usuario
+    this.userLocationSubscription = this.userService.getUserById(repartidorId).subscribe(user => {
+      if (user && user.latitude && user.longitude) {
+        const repartidorLocation: google.maps.LatLngLiteral = {
+          lat: user.latitude,
+          lng: user.longitude,
+        };
+        this.updateMarker(repartidorLocation); // Mostramos la ubicación del repartidor en el mapa
+      } else {
+        console.error('No se encontró el repartidor o la ubicación.');
+      }
+    });
+  }
 
-    if (repartidor && repartidor.latitude && repartidor.longitude) {
-      const repartidorLocation: google.maps.LatLngLiteral = { lat: repartidor.latitude, lng: repartidor.longitude };
-      this.updateMarker(repartidorLocation); // Mostramos la ubicación del repartidor en el mapa
-    } else {
-      console.error("Ubicación del repartidor no disponible");
+  private updateMarker(location: google.maps.LatLngLiteral): void {
+    if (this.isMapInitialized) {
+      // Actualizamos la ubicación del marcador
+      this.marker.setPosition(location);
+      this.map.setCenter(location);
     }
   }
 
-  // Actualizar el marcador en el mapa
-  private updateMarker(location: google.maps.LatLngLiteral): void {
-    if (this.marker) {
-      this.marker.setPosition(location); // Cambiar la ubicación del marcador
-      this.map.setCenter(location); // Centrar el mapa en la nueva ubicación solo cuando sea necesario
-
-     // Texto que aparecerá al hacer clic en el marcador
-      };
-     
-  }
-
-  // Simulación de actualización en tiempo real de la ubicación del repartidor
   private startLocationPolling(): void {
     setInterval(() => {
-      const repartidorId = '2'; // Obtén el ID del repartidor
-      this.showUserLocation(repartidorId); // Actualiza la ubicación cada 5 segundos (puedes ajustarlo)
-    }, 5000); // Intervalo de 5 segundos (ajusta según lo necesario)
+      const repartidorId = '2'; // Usamos un ID de repartidor de ejemplo
+      this.showUserLocation(repartidorId);
+    }, 5000); // Actualiza la ubicación cada 5 segundos
   }
 
-  // Métodos para actualizar el estado del pedido (lógica original)
+  ngOnDestroy(): void {
+    if (this.userLocationSubscription) {
+      this.userLocationSubscription.unsubscribe();
+    }
+  }
+
   actualizarPedido1() {
     const pedidoId = this.pedidoForm.get('id')?.value;
 

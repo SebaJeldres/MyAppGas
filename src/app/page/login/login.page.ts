@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginUsersService } from 'src/app/api/services/users/login-users.service';
-import { Users } from 'src/app/models/users';
+import { UserService } from 'src/app/api/services/user/user.service';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -9,44 +9,59 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  userLogin = { username: '', password: '' };
 
-  userLogin: Users = {
-    id: "",
-    username: "",
-    password: "",
-    rol: "",
-    Nombre: "",
-    apellido: "",
-    Correo: "",
-    NumTelefonico: "",
-    Direccion: ""
-  };
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private alertController: AlertController
+  ) {}
 
-  constructor(private _userLogin: LoginUsersService, private router: Router) { }
+  ngOnInit() {}
 
-  ngOnInit() { }
+  Registro() {
+    this.router.navigate(['registro'], {
+      
+    });
+  }
 
-  login() {  // Sin parámetros
-    console.log(this.userLogin);
-    const user = this._userLogin.encontrar_usuario(this.userLogin); // Buscar usuario
-    if (user) {
-      console.info("Usuario encontrado");
-      // Navegar a la página 'home' y pasar el estado (datos del usuario)
-      this.router.navigate(['home'], {
-        state: {
-          id: user.id,
-          x: user.username,  // Pasar el username
-          rol: user.rol,     // Pasar el rol del usuario
-          nombre: user.Nombre,  // Pasar el nombre
-          apellido: user.apellido, // Pasar el apellido
-          correo: user.Correo,  // Pasar el correo
-          numTelefonico: user.NumTelefonico, // Pasar el número telefónico
-          Direccion: user.Direccion
-        }
-      });
-    } else {
-      console.error("Usuario no encontrado");
+  async iniciarSesion() {
+    const { username, password } = this.userLogin;
+  
+    if (!username || !password) {
+      this.mostrarAlerta('Error', 'Por favor ingrese sus credenciales.');
+      return;
     }
+  
+    this.userService.validarCredenciales(username, password).subscribe({
+      next: (usuario) => {
+        if (usuario) {
+          console.log('Usuario autenticado:', usuario);
+          if (usuario.rol === 'usuario') {
+            this.router.navigate(['/home']);
+          } else if (usuario.rol === 'distribuidora') {
+            this.router.navigate(['/home']);
+          } else if (usuario.rol === 'repartidor') {
+            this.router.navigate(['/home']);
+          }
+        } else {
+          this.mostrarAlerta('Error', 'Credenciales inválidas. Por favor intente de nuevo.');
+        }
+      },
+      error: (err) => {
+        console.error('Error al validar credenciales:', err);
+        this.mostrarAlerta('Error', 'Ocurrió un problema al iniciar sesión.');
+      },
+    });
+  }
+  
+
+  private async mostrarAlerta(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 }
-

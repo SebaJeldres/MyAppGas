@@ -1,24 +1,26 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { PedidoService } from 'src/app/api/services/pedido/pedido.service';
-import { LoginUsersService } from 'src/app/api/services/users/login-users.service';
+import { UserService } from 'src/app/api/services/user/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-detalle-pedido',
   templateUrl: './detalle-pedido.page.html',
   styleUrls: ['./detalle-pedido.page.scss'],
 })
-export class DetallePedidoPage implements OnInit, AfterViewInit {
+export class DetallePedidoPage implements OnInit, AfterViewInit, OnDestroy {
   pedidoForm: FormGroup;
   username: string | null = null;
 
   // Propiedades para el mapa y el marcador
   private map!: google.maps.Map;
   private marker!: google.maps.Marker;
-  private initialLocation: google.maps.LatLngLiteral = { lat: -33.007182, lng: -71.498390}; // Coordenadas fijas de Viña del Mar, puedes cambiarlo a la ubicación deseada
+  private initialLocation: google.maps.LatLngLiteral = { lat: -33.007182, lng: -71.498390 }; // Coordenadas fijas de Viña del Mar
   private isMapInitialized: boolean = false; // Bandera para verificar si el mapa está inicializado
+  private userLocationSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,7 +28,7 @@ export class DetallePedidoPage implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private pedidoService: PedidoService,
     private alertController: AlertController,
-    private loginUsersService: LoginUsersService,
+    private UsersService: UserService,
   ) {
     this.pedidoForm = this.formBuilder.group({
       id: [''],
@@ -47,6 +49,7 @@ export class DetallePedidoPage implements OnInit, AfterViewInit {
     if (navigation?.extras?.state) {
       this.username = navigation.extras.state['rol'];
     }
+
     if (navigation?.extras?.state) {
       const pedido = navigation.extras.state['pedido'];
       if (pedido) {
@@ -67,13 +70,19 @@ export class DetallePedidoPage implements OnInit, AfterViewInit {
         if (this.isMapInitialized) {
           this.showUserLocation(usuarioId); // Llamar para mostrar la ubicación del usuario
         }
-    
       }
     }
   }
 
   ngAfterViewInit(): void {
     this.initMap(); // Inicializamos el mapa cuando el componente está listo
+    this.startLocationPolling(); // Comenzamos a actualizar la ubicación del repartidor
+  }
+
+  ngOnDestroy(): void {
+    if (this.userLocationSubscription) {
+      this.userLocationSubscription.unsubscribe(); // Limpiamos la suscripción cuando el componente se destruye
+    }
   }
 
   private initMap(): void {
@@ -90,7 +99,6 @@ export class DetallePedidoPage implements OnInit, AfterViewInit {
     this.marker = new google.maps.Marker({
       position: this.initialLocation,
       map: this.map,
-      // Eliminamos la propiedad 'title' para que no aparezca texto sobre el marcador
     });
 
     // Marcamos el mapa como inicializado
@@ -104,26 +112,23 @@ export class DetallePedidoPage implements OnInit, AfterViewInit {
       return;
     }
 
-    // Simulamos obtener la ubicación del usuario (deberías hacerlo con una API o WebSocket real)
-    const usuario = this.loginUsersService.getUserById(usuarioId);
-
-    if (usuario && usuario.latitude && usuario.longitude) {
-      const usuarioLocation: google.maps.LatLngLiteral = { lat: usuario.latitude, lng: usuario.longitude };
-      this.updateMarker(usuarioLocation); // Mostramos la ubicación del repartidor en el mapa
-    } else {
-      console.error("Ubicación del usuario no disponible");
-    }
+    // Suscripción para obtener la ubicación del usuario
+    this.userLocationSubscription = this.UsersService.getUserById(usuarioId).subscribe(user => {
+      if (user && user.latitude && user.longitude) {
+        const usuarioLocation: google.maps.LatLngLiteral = { lat: user.latitude, lng: user.longitude };
+        this.updateMarker(usuarioLocation); // Actualiza el marcador en el mapa
+      } else {
+        console.error("Ubicación del usuario no disponible");
+      }
+    });
   }
 
   // Actualizar el marcador en el mapa
   private updateMarker(location: google.maps.LatLngLiteral): void {
     if (this.marker) {
       this.marker.setPosition(location); // Cambiar la ubicación del marcador
-      this.map.setCenter(location); // Centrar el mapa en la nueva ubicación solo cuando sea necesario
-
-     // Texto que aparecerá al hacer clic en el marcador
-      };
-     
+      this.map.setCenter(location); // Centrar el mapa en la nueva ubicación
+    }
   }
 
   // Simulación de actualización en tiempo real de la ubicación del repartidor
@@ -138,7 +143,7 @@ export class DetallePedidoPage implements OnInit, AfterViewInit {
   actualizarPedido() {
     const pedidoId = this.pedidoForm.get('id')?.value;
     const nuevaPatente = this.pedidoForm.get('patente')?.value;
-  
+
     if (pedidoId && nuevaPatente) {
       this.pedidoService
         .actualizarPedido(pedidoId, { patente: nuevaPatente, estado: 'Camino' })
