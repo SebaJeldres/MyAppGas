@@ -1,0 +1,46 @@
+ion-list{
+    margin:0 ;
+    padding: 0;
+}
+
+ion-item{
+    --background: #cad2c5;
+    color: black;
+    border:10px;
+}
+
+
+h1{
+    color:white;
+    text-align: center;
+}
+
+ion-button{
+    --background: #52796f;
+    color: white;
+}
+
+ /* Mejoramos la alineación de los productos */
+ .producto-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .producto-info span {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+
+  ion-label h2 {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  ion-label p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #444;
+  }

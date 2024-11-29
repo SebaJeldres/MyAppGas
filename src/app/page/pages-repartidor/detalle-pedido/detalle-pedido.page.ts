@@ -131,6 +131,7 @@ export class DetallePedidoPage implements OnInit, AfterViewInit, OnDestroy {
         this.updateMarker(usuarioLocation);
 
         // Actualizar los valores de latitude_r y longitude_r en el formulario
+
       } else {
         console.error("Ubicación del usuario no disponible");
       }

@@ -15,7 +15,7 @@ export class HomePage implements OnInit {
   solicitudesEnEspera: solicitud[] = [];
   pedidosEnCamino: Pedido[] = [];
   pedidosEnEspera: Pedido[] = [];
-    
+
   // Variables de usuario inicializadas
   id: string | null = null;
   username: string | null = null;
@@ -174,7 +174,6 @@ export class HomePage implements OnInit {
       state: { pedido, id: this.id, rol: this.rol },
     });
   }
-  
 
   irAHistorialEntregas() {
     this.router.navigate(['historial-entregas'], {
@@ -192,5 +191,27 @@ export class HomePage implements OnInit {
     this.router.navigate(['historial-ventas'], {
       state: { id: this.id },
     });
+  }
+
+  // Método para cerrar sesión
+  cerrarSesion() {
+    // Limpiar datos del servicio de usuario
+    this.buscarUsuarioService.setUser(null);
+
+    // Limpiar el almacenamiento local (localStorage)
+    localStorage.removeItem('usuario');
+
+    // Limpiar las variables locales
+    this.id = null;
+    this.username = null;
+    this.rol = null;
+    this.Nombre = null;
+    this.apellido = null;
+    this.Correo = null;
+    this.NumTelefonico = null;
+    this.Direccion = null;
+
+    // Redirigir al login
+    this.router.navigate(['/login']);
   }
 }

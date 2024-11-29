@@ -46,6 +46,9 @@ export class LoginPage implements OnInit {
 
           // Redirigir al home
           this.router.navigate(['/home']);
+          
+          // Limpiar los campos de login después de la autenticación exitosa
+          this.userLogin = { username: '', password: '' };
         } else {
           // Mostrar alerta si las credenciales son incorrectas
           this.mostrarAlerta('Error', 'Credenciales inválidas. Por favor intente de nuevo.');
@@ -56,6 +59,15 @@ export class LoginPage implements OnInit {
         this.mostrarAlerta('Error', 'Ocurrió un problema al iniciar sesión.');
       },
     });
+  }
+
+  // Método para cerrar sesión
+  cerrarSesion() {
+    // Limpiar los campos de login
+    this.userLogin = { username: '', password: '' };
+
+    // Redirigir al login
+    this.router.navigate(['/login']);
   }
 
   // Método para mostrar alertas al usuario

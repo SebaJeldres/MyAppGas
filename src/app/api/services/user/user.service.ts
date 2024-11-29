@@ -74,4 +74,12 @@ export class UserService {
   removeLoggedUser() {
     localStorage.removeItem('loggedUser');
   }
+
+  limpiarSesion() {
+    // Limpia los datos almacenados en la sesión, como el rol y el nombre de usuario
+    localStorage.removeItem('usuario'); // Si usas localStorage para almacenar la sesión
+    sessionStorage.removeItem('usuario'); // Si usas sessionStorage
+
+    // También puedes reiniciar cualquier variable relevante aquí si es necesario
+  }
 }

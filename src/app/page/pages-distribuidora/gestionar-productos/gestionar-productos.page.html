@@ -12,13 +12,17 @@
 
 <ion-content [fullscreen]="true">
   <ion-list *ngIf="productos.length > 0; else listaVacia">
-    <ion-item *ngFor="let producto of productos">
-      <ion-label>
-        Id: {{ producto.id }} || {{ producto.nombre }} {{ producto.kilos }} {{ producto.tipo }} ||
-        Precio: {{ producto.precio }} || Stock: {{ producto.stock }}
+    <ion-item *ngFor="let producto of productos" lines="inset" detail>
+      <ion-label class="ion-padding-start">
+        <h2>{{ producto.nombre }} {{ producto.kilos }} {{ producto.tipo }}</h2>
+        <p>
+          <strong>SKU:</strong> {{ producto.sku }} <br />
+          <strong>Precio:</strong> ${{ producto.precio }} | 
+          <strong>Stock:</strong> {{ producto.stock }}
+        </p>
       </ion-label>
-    
-      <ion-buttons slot="end" id="open-modal">
+
+      <ion-buttons slot="end">
         <!-- Botón de Modificar -->
         <ion-button color="primary" (click)="abrirModalModificar(producto)">
           <ion-icon slot="icon-only" name="create-outline"></ion-icon>
@@ -27,7 +31,6 @@
         <ion-button color="danger" (click)="eliminarProducto(producto.id ? producto.id : '')">
           <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
         </ion-button>
-
       </ion-buttons>
     </ion-item>
   </ion-list>
@@ -79,3 +82,4 @@
     </ng-template>
   </ion-modal>
 </ion-content>
+
