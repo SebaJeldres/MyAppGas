@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ProductoService } from 'src/app/api/services/producto/producto.service'; // Servicio para obtener productos
-import { SolicitudService } from 'src/app/api/services/solicitud/solicitud.service'; // Servicio para manejar pedidos
-import { UserService } from 'src/app/api/services/user/user.service'; // Servicio para obtener datos del usuario logueado
-import { producto } from 'src/app/models/producto'; // Modelo Producto
-import { solicitud } from 'src/app/models/solicitud'; // Modelo Pedido
+import { ProductoService } from 'src/app/api/services/producto/producto.service';
+import { SolicitudService } from 'src/app/api/services/solicitud/solicitud.service';
+import { UserService } from 'src/app/api/services/user/user.service';
+import { producto } from 'src/app/models/producto';
+import { solicitud } from 'src/app/models/solicitud';
 
 @Component({
   selector: 'app-realizar-pedido',
@@ -18,28 +18,29 @@ export class RealizarPedidoPage implements OnInit {
     direccion: '',
     numtelefonico: '',
     detalle_pedido: [],
-    metodo_pago: '', // Asignamos un valor por defecto vacío
+    metodo_pago: '',
     hora_ini: new Date(),
     estado_soli: 'espera',
     monto_total: 0,
     longitude: 0,
-    latitude:0
+    latitude: 0,
   };
   total: number = 0;
+  private map!: google.maps.Map;
+  private marker!: google.maps.Marker;
 
   constructor(
     private solicitudService: SolicitudService,
     private productoService: ProductoService,
-    private userService: UserService // Inyectamos el servicio UserService
-  ) { }
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
-    // Obtener los productos disponibles
     this.productoService.obtener_productos().subscribe(
       (response: any) => {
         this.productos = response.body.map((producto: producto) => ({
           ...producto,
-          cantidad: 0, // Inicializamos la cantidad de cada producto a 0
+          cantidad: 0,
         }));
         console.log(this.productos);
       },
@@ -49,45 +50,105 @@ export class RealizarPedidoPage implements OnInit {
       }
     );
 
-    // Obtener los datos del usuario con ID 3
     this.userService.getUserById('3').subscribe((user) => {
       if (user) {
-        // Asignamos los datos del usuario al modelo de la solicitud
         this.solicitud.nombre_usuario = user.nombre || 'Usuario';
         this.solicitud.direccion = user.direccion || 'Dirección no disponible';
         this.solicitud.numtelefonico = user.num_telefonico || 'Teléfono no disponible';
-        this.solicitud.latitude= user.latitude ;
-        this.solicitud.longitude= user.longitude;
       } else {
         console.error('Usuario no encontrado');
         alert('No se ha encontrado al usuario con ID 3.');
       }
     });
+
+    this.initMap();
+  }
+
+  initMap() {
+    const initialLocation = { lat: -32.999928, lng: -71.509687 };
+    const mapOptions: google.maps.MapOptions = {
+      center: initialLocation,
+      zoom: 15,
+    };
+
+    const mapElement = document.getElementById('map') as HTMLElement;
+    this.map = new google.maps.Map(mapElement, mapOptions);
+
+    // Marcador inicial
+    this.marker = new google.maps.Marker({
+      position: initialLocation,
+      map: this.map,
+      draggable: true,
+      title: 'Selecciona tu ubicación',
+    });
+
+    // Actualizar coordenadas al mover el marcador
+    this.marker.addListener('dragend', () => {
+      const position = this.marker.getPosition();
+      if (position) {
+        this.solicitud.latitude = position.lat();
+        this.solicitud.longitude = position.lng();
+      }
+    });
+
+    // Permitir clics en el mapa para mover el marcador
+    this.map.addListener('click', (event: google.maps.MapMouseEvent) => {
+      if (event.latLng) {
+        const clickedLocation = event.latLng;
+        this.marker.setPosition(clickedLocation);
+
+        this.solicitud.latitude = clickedLocation.lat();
+        this.solicitud.longitude = clickedLocation.lng();
+      }
+    });
+  }
+
+  confirmarUbicacion() {
+    alert(
+      `Ubicación seleccionada: \nLatitud: ${this.solicitud.latitude}, Longitud: ${this.solicitud.longitude}`
+    );
   }
 
   calcularTotal() {
     this.total = this.productos.reduce((sum, producto) => {
-      return sum + producto.precio * (producto.cantidad || 0); // Calculamos el total basado en la cantidad seleccionada
+      return sum + producto.precio * (producto.cantidad || 0);
     }, 0);
-    this.solicitud.monto_total = this.total; // Actualizamos el monto total de la solicitud
+    this.solicitud.monto_total = this.total;
+  }
+
+  // Método para modificar la cantidad de los productos
+  modificarCantidad(producto: any, tipo: string) {
+    if (!producto.cantidad) {
+      producto.cantidad = 0;
+    }
+
+    // Aumentar o disminuir la cantidad
+    if (tipo === 'mas') {
+      producto.cantidad++;
+    } else if (tipo === 'menos' && producto.cantidad > 0) {
+      producto.cantidad--;
+    }
+
+    // Recalcular el total después de modificar la cantidad
+    this.calcularTotal();
   }
 
   realizarPedido() {
     const productosSeleccionados = this.productos
-      .filter((producto) => producto.cantidad && producto.cantidad > 0) // Filtramos productos con cantidad > 0
-      .map((producto) => `${producto.id} ${producto.nombre} (${producto.cantidad})`); // Creamos un listado de productos seleccionados
+      .filter((producto) => producto.cantidad && producto.cantidad > 0)
+      .map((producto) => `${producto.id} ${producto.nombre} (${producto.cantidad})`);
 
     if (productosSeleccionados.length === 0) {
       alert('Por favor, selecciona al menos un producto.');
       return;
     }
 
-    if (!this.solicitud.metodo_pago) { // Verificamos que se haya seleccionado un método de pago
+    if (!this.solicitud.metodo_pago) {
       alert('Por favor, selecciona un método de pago.');
       return;
     }
 
-    this.solicitud.detalle_pedido = productosSeleccionados; // Asignamos los productos seleccionados al detalle del pedido
+    this.solicitud.detalle_pedido = productosSeleccionados;
 
     this.solicitudService.crearSolicitud(this.solicitud).subscribe(
       (response: any) => {

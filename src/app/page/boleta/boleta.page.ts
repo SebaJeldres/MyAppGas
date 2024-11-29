@@ -57,17 +57,9 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     // Obtener el usuario actual desde el servicio 'BuscarUsuarioService'
-    const usuario = this.buscarUsuarioService.getUser();
-
-    if (usuario) {
-      this.id = usuario.id;
-      this.username = usuario.username;
-      this.rol = usuario.rol || 'No definido'; // Asignar rol
-      console.log('Rol recibido:', this.rol);
-    }
-
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
+      this.rol = navigation.extras.state['rol'];
       const pedido = navigation.extras.state['pedido'];
       if (pedido) {
         this.pedidoForm.patchValue({
@@ -86,6 +78,10 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
           latitude_r: pedido.latitude_r,
           longitude_r: pedido.longitude_r
         });
+
+        console.log('Rol recibido en la página:', this.rol);
+        console.log('ID al navegar:', this.id);
+
 
         // Actualizamos la ubicación inicial usando latitud y longitud del pedido
         const latitud = pedido.latitude; // Coordenada de la entrega

@@ -33,10 +33,7 @@ const routes: Routes = [
     path: 'cuenta-repartidor',
     loadChildren: () => import('./page/pages-repartidor/cuenta-repartidor/cuenta-repartidor.module').then(m => m.CuentaRepartidorPageModule)
   },
-  {
-    path: 'informacion-vehiculo',
-    loadChildren: () => import('./page/pages-repartidor/informacion-vehiculo/informacion-vehiculo.module').then(m => m.InformacionVehiculoPageModule)
-  },
+
   {
     path: 'historial-entregas',
     loadChildren: () => import('./page/pages-repartidor/historial-entregas/historial-entregas.module').then(m => m.HistorialEntregasPageModule)
@@ -56,7 +53,8 @@ const routes: Routes = [
   {
     path: 'detalle-soli',
     loadChildren: () => import('./page/pages-distribuidora/detalle-soli/detalle-soli.module').then( m => m.DetalleSoliPageModule)
-  },  {
+  },
+  {
     path: 'detalle-pedido',
     loadChildren: () => import('./page/pages-repartidor/detalle-pedido/detalle-pedido.module').then( m => m.DetallePedidoPageModule)
   },

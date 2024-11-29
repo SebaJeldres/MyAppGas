@@ -1,0 +1,117 @@
+.contenedor_body {
+    margin: 30px;
+    margin-top: 220px;
+    border: 1px solid black;
+    border-radius: 14px;
+    background-color: #cad2c5;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #52796f;
+    margin-bottom: 20px;
+  }
+  
+  .h1_a {
+    color: #cad2c5;
+    font-size: 25px;
+  }
+  
+  ion-list{
+   padding: 0;
+   margin: 0;
+    border-radius: 0;
+  }
+  
+  ion-card {
+    background-color: #cad2c5;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  ion-card-header {
+    background-color: #354f52;
+    color: #cad2c5;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  ion-card-title {
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  ion-card-content {
+    color: black;
+    font-size: 18px;
+    padding: 15px;
+  }
+  
+  ion-button {
+    --background: #52796f;
+    color: #cad2c5;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 25px;
+  }
+  
+  ion-item {
+    --background: #52796f;
+  
+    ion-button {
+      --background: #cad2c5;
+      color: #354f52;
+      padding-top: 50px;
+      height: 100px;
+    }
+    p{
+      color: #cad2c5;
+    }
+  }
+  
+  .item-soli {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+    background-color: #52796f;
+  
+    .content {
+      width: 100%;
+      padding: 15px;
+    }
+  
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 5px; /* Reduce el espacio entre la fila de datos y el botón */
+      font-size: 16px;
+      color: #cad2c5;
+  
+      span {
+        flex: 1;
+        text-align: center;
+        font-weight: bold;
+        padding: 6px;
+      }
+      
+    }
+  
+  
+  
+    .button-detalle {
+      align-self: flex-end;
+      --background: #cad2c5;
+      color: #354f52;
+      font-size: 12px; /* Reduce el tamaño del texto */
+      border-radius: 15px; /* Botón ligeramente redondeado */
+      padding: 5px 10px; /* Menos espacio interno */
+      height: auto; /* Ajusta la altura al contenido */
+      width: auto; /* Ajusta el ancho al contenido */
+    }
+  }
+  
+  
+  

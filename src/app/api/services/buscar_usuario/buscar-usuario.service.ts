@@ -1,21 +1,27 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BuscarUsuarioService {
+  private usuario: any = null;
 
-  private userData: any = null;
+  constructor() {}
 
-  setUser(data: any) {
-    this.userData = data;
-  }
+  // Método para guardar los datos del usuario
+  // En BuscarUsuarioService
+setUser(usuario: any) {
+  localStorage.setItem('usuario', JSON.stringify(usuario));
+}
 
+
+  // Método para obtener los datos del usuario actual
   getUser() {
-    return this.userData;
+    return this.usuario;
   }
 
+  // Método para borrar los datos del usuario (al cerrar sesión)
   clearUser() {
-    this.userData = null;
+    this.usuario = null;
   }
 }

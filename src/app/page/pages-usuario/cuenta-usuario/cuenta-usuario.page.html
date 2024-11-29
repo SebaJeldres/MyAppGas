@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button default-href="['/login']"></ion-back-button>
+      <ion-back-button default-href="['/home']"></ion-back-button>
     </ion-buttons>
     <ion-title>Perfil de Usuario</ion-title>
   </ion-toolbar>
@@ -23,10 +23,12 @@
       </ion-card-header>
 
       <ion-card-content>
+        <p><strong>Usuario:</strong> {{ username }}</p>
         <p><strong>Nombre:</strong> {{ nombre }} {{ apellido }}</p>
         <p><strong>Correo:</strong> {{ correo }}</p>
         <p><strong>Número Telefónico:</strong> {{ numTelefonico }}</p>
         <p><strong>Dirección:</strong> {{ direccion }}</p>
+        <p><strong>Rol:</strong> {{ rol }}</p>
       </ion-card-content>
     </ion-card>
   </div>

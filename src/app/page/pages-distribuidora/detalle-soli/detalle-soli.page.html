@@ -1,5 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="['/home']"></ion-back-button>
+    </ion-buttons>
     <ion-title>Detalle Solicitud</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,43 +16,38 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Monto Total: </ion-label>
-        <ion-input formControlName="monto_total"></ion-input>
+        <ion-input formControlName="monto_total">monto total:</ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Usuario: </ion-label>
-        <ion-input formControlName="nombre_usuario"></ion-input>
+        <ion-input formControlName="nombre_usuario">Usuario:</ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Dirección: </ion-label>
-        <ion-input formControlName="direccion_entrega"></ion-input>
+        <ion-input formControlName="direccion_entrega">Direccion:</ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Metodo de pago: </ion-label>
-        <ion-input formControlName="metodo_pago"></ion-input>
+        <ion-input formControlName="metodo_pago">Metodo de pago:</ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Num Telefonico: </ion-label>
-        <ion-input formControlName="numtelefonico"></ion-input>
+        <ion-input formControlName="numtelefonico">Telefono</ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Hora Inicio: </ion-label>
-        <ion-input formControlName="hora_ini"></ion-input>
+        <ion-input formControlName="hora_ini">Hora inicio</ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Detalle Solicitud: </ion-label>
-        <ion-input formControlName="detalle_solicitud"></ion-input>
+        <ion-input formControlName="detalle_solicitud">Detalle Solicitud</ion-input>
       </ion-item>
 
 
     </ion-list>
   </form>
+
+  <div id="map" style="width: 100%; height: 300px; margin-top: 10px;"></div>
 
   <ion-button *ngIf="rol === 'distribuidora'" (click)="crearPedido()">Aceptar</ion-button>
   <ion-button (click)="CancelarSolicitud()">Rechazar</ion-button>

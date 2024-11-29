@@ -18,6 +18,12 @@ h1 {
   font-size: 25px;
 }
 
+ion-list{
+ padding: 0;
+ margin: 0;
+  border-radius: 0;
+}
+
 ion-card {
   background-color: #cad2c5;
   border-radius: 10px;
@@ -59,6 +65,9 @@ ion-item {
     padding-top: 50px;
     height: 100px;
   }
+  p{
+    color: #cad2c5;
+  }
 }
 
 .item-soli {
@@ -66,14 +75,11 @@ ion-item {
   flex-direction: column;
   align-items: flex-start;
   padding: 15px;
-  border: 1px solid #354f52;
-  border-radius: 10px;
   background-color: #52796f;
-  margin-bottom: 10px;
 
   .content {
     width: 100%;
-    padding: 10px;
+    padding: 15px;
   }
 
   .data-row {
@@ -90,7 +96,10 @@ ion-item {
       font-weight: bold;
       padding: 6px;
     }
+    
   }
+
+
 
   .button-detalle {
     align-self: flex-end;

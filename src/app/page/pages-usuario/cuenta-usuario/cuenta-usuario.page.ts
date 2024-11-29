@@ -13,7 +13,7 @@ export class CuentaUsuarioPage implements OnInit {
   nombre: string | null = null;
   apellido: string | null = null;
   correo: string | null = null;
-  numTelefonico: string | null = null;
+  numTelefonico: number | null = null;
   direccion: string | null = null;
 
   constructor(private router: Router) { }

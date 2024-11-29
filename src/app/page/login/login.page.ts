@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/api/services/user/user.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { BuscarUsuarioService } from 'src/app/api/services/buscar_usuario/buscar-usuario.service'; // Cambié el nombre del servicio
+import { BuscarUsuarioService } from 'src/app/api/services/buscar_usuario/buscar-usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -16,15 +16,17 @@ export class LoginPage implements OnInit {
     private userService: UserService,
     private router: Router,
     private alertController: AlertController,
-    private buscarUsuarioService: BuscarUsuarioService // Uso del servicio renombrado
+    private buscarUsuarioService: BuscarUsuarioService // Uso del servicio compartido para manejar al usuario
   ) {}
 
   ngOnInit() {}
 
+  // Método para redirigir a la página de registro
   Registro() {
     this.router.navigate(['registro']);
   }
 
+  // Método para iniciar sesión
   async iniciarSesion() {
     const { username, password } = this.userLogin;
 
@@ -33,17 +35,19 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    // Cambié el servicio 'validarCredenciales' por 'buscar_user' en el servicio 'UserService'
+    // Llama al método `validarCredenciales` del servicio `UserService` para validar al usuario
     this.userService.validarCredenciales(username, password).subscribe({
       next: (usuario) => {
         if (usuario) {
-          // Almacenar los datos del usuario en el servicio compartido
-          this.buscarUsuarioService.setUser(usuario); // Esto puede guardar el usuario en un servicio compartido
+          // Almacenar los datos del usuario en el servicio compartido `BuscarUsuarioService`
+          this.buscarUsuarioService.setUser(usuario);
 
           console.log('Usuario autenticado:', usuario);
-          // Redirigir al home independientemente del rol
+
+          // Redirigir al home
           this.router.navigate(['/home']);
         } else {
+          // Mostrar alerta si las credenciales son incorrectas
           this.mostrarAlerta('Error', 'Credenciales inválidas. Por favor intente de nuevo.');
         }
       },
@@ -54,6 +58,7 @@ export class LoginPage implements OnInit {
     });
   }
 
+  // Método para mostrar alertas al usuario
   private async mostrarAlerta(header: string, message: string) {
     const alert = await this.alertController.create({
       header,
