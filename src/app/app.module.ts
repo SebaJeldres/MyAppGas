@@ -1,43 +1,47 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router'; // Asegúrate de importar esto
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { RouteReuseStrategy } from '@angular/router';
+import { IonicModule, IonicRouteStrategy,} from '@ionic/angular'; // Asegúrate de importar 'IonicConfig'
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GoogleMapsModule } from '@angular/google-maps';
-import { isPlatform, ionicModule } from '@ionic/angular';
-const getConfig = () =>{
+import { isPlatform } from '@ionic/angular';
+
+// Configuración personalizada si es necesaria para tu proyecto
+const getConfig = () => {
   if (isPlatform('hybrid')) {
-    return{
+    return {
       backButtonText: 'Previous',
       tabButtonLayout: 'label-hide'
-      }
-    }
-
-    return {
-     menuIcon: 'ellipsis-vertical'
-     }
+    };
   }
+
+  return {
+    menuIcon: 'ellipsis-vertical'
+  };
+};
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(getConfig()),
+    IonicModule.forRoot({
+      backButtonText: 'Previous',  // ejemplo de configuración predeterminada
+      tabButtonLayout: 'label-hide',
+      // Aquí puedes agregar cualquier otra configuración estándar para Ionic
+    }),  // Asegúrate de pasar un objeto de configuración válido
     AppRoutingModule,
-    HttpClientModule, // Importa el módulo HTTP aquí
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    GoogleMapsModule, // Asegúrate de incluir FormsModule
+    GoogleMapsModule,
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent],
-
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}
-
-

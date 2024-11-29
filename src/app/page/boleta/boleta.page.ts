@@ -18,6 +18,7 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
   private isMapInitialized: boolean = false; // Bandera para verificar si el mapa está inicializado
 
   private initialLocation: google.maps.LatLngLiteral = { lat: -33.4691, lng: -71.5771 }; // Default (Viña del Mar)
+  private driverLocation: google.maps.LatLngLiteral = { lat: 0, lng: 0 }; // Ubicación inicial del repartidor
 
   // Definir el mapa y los marcadores como propiedades de la clase
   private map!: google.maps.Map;
@@ -82,7 +83,6 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
         console.log('Rol recibido en la página:', this.rol);
         console.log('ID al navegar:', this.id);
 
-
         // Actualizamos la ubicación inicial usando latitud y longitud del pedido
         const latitud = pedido.latitude; // Coordenada de la entrega
         const longitud = pedido.longitude; // Coordenada de la entrega
@@ -90,6 +90,15 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
           this.initialLocation = { lat: latitud, lng: longitud };
         } else {
           console.error('Las coordenadas del punto de entrega no están disponibles.');
+        }
+
+        // Inicializar la ubicación del repartidor
+        const latitudRepartidor = pedido.latitude_r; // Coordenada del repartidor
+        const longitudRepartidor = pedido.longitude_r; // Coordenada del repartidor
+        if (latitudRepartidor && longitudRepartidor) {
+          this.driverLocation = { lat: latitudRepartidor, lng: longitudRepartidor };
+        } else {
+          console.error('Las coordenadas del repartidor no están disponibles.');
         }
       }
     }
@@ -127,61 +136,43 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
       console.error('Las coordenadas del punto de entrega no son válidas.');
     }
 
-    // Marcador para el repartidor (inicialmente en una posición predeterminada)
-    const initialDriverLocation = {
-      lat: parseFloat(this.pedidoForm.get('latitude_r')?.value || '0'),
-      lng: parseFloat(this.pedidoForm.get('longitude_r')?.value || '0'),
-    };
-
-    this.driverMarker = new google.maps.Marker({
-      position: initialDriverLocation,
-      map: this.map,
-      title: 'Repartidor',
-      icon: {
-        url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-      },
-    });
+    // Marcador para el repartidor
+    if (this.driverLocation.lat && this.driverLocation.lng) {
+      this.driverMarker = new google.maps.Marker({
+        position: this.driverLocation,
+        map: this.map,
+        title: 'Repartidor',
+        icon: {
+          url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        },
+      });
+    } else {
+      console.error('Las coordenadas del repartidor no son válidas.');
+    }
 
     this.isMapInitialized = true;
-
-    // Iniciar el movimiento del repartidor
-    this.moveDriverMarkerToDeliveryPoint(initialDriverLocation, this.initialLocation);
   }
 
-  private moveDriverMarkerToDeliveryPoint(driverLocation: google.maps.LatLngLiteral, deliveryLocation: google.maps.LatLngLiteral): void {
-    const distance = google.maps.geometry.spherical.computeDistanceBetween(
-      new google.maps.LatLng(driverLocation.lat, driverLocation.lng),
-      new google.maps.LatLng(deliveryLocation.lat, deliveryLocation.lng)
-    );
+  // Método para actualizar la posición del repartidor en tiempo real
+  actualizarUbicacionRepartidor() {
+    // Aquí deberías obtener las nuevas coordenadas del repartidor desde tu backend o servicio
+    // Ejemplo de actualización:
+    const newLat = parseFloat(this.pedidoForm.get('latitude_r')?.value || '0');
+    const newLng = parseFloat(this.pedidoForm.get('longitude_r')?.value || '0');
 
-    const stepCount = 100; // Definir el número de pasos
-    const stepDelay = 100; // Tiempo entre cada paso (en milisegundos)
-    let step = 0;
-    
-    // Llamar a esta función cada cierto intervalo para mover al repartidor
-    const moveInterval = setInterval(() => {
-      if (step < stepCount) {
-        const latStep = (deliveryLocation.lat - driverLocation.lat) / stepCount;
-        const lngStep = (deliveryLocation.lng - driverLocation.lng) / stepCount;
-
-        // Actualizar la posición del repartidor
-        const newLat = driverLocation.lat + latStep;
-        const newLng = driverLocation.lng + lngStep;
-        const newLocation = { lat: newLat, lng: newLng };
-
-        this.driverMarker.setPosition(newLocation); // Actualizar la posición del marcador
-
-        step++;
-      } else {
-        clearInterval(moveInterval); // Detener el movimiento cuando se llega al destino
-      }
-    }, stepDelay);
+    // Si las coordenadas son válidas, actualiza el marcador
+    if (newLat && newLng) {
+      const newLocation = { lat: newLat, lng: newLng };
+      this.driverMarker.setPosition(newLocation); // Actualiza la posición del repartidor en el mapa
+      this.driverLocation = newLocation; // Actualiza la ubicación interna del repartidor
+    }
   }
 
   ngOnDestroy(): void {
-    // No es necesario realizar nada específico para la eliminación, ya que eliminamos el polling.
+    // Limpiar si es necesario
   }
 
+  // Métodos para actualizar el estado del pedido
   actualizarPedido1() {
     const pedidoId = this.pedidoForm.get('id')?.value;
 
