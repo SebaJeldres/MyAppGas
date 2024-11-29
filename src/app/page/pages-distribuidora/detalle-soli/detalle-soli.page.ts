@@ -22,6 +22,7 @@ export class DetalleSoliPage implements OnInit {
     private pedidoService: PedidoService, // Servicio de pedidos
     private alertController: AlertController
   ) {
+    // Definir el formulario
     this.solicitudForm = this.formBuilder.group({
       id: [''],
       monto_total: [''],
@@ -34,108 +35,124 @@ export class DetalleSoliPage implements OnInit {
       hora_ini: [''],
       numtelefonico: [''],
       detalle_solicitud: [],
+      latitude: [''],
+      longitude: [''],
+      latitude_r: [''],
+      longitude_r:['']
+
     });
   }
 
   ngOnInit() {
-    
     const navigation = this.router.getCurrentNavigation();
 
+    // Verificar si el rol está presente en la navegación
     if (navigation?.extras?.state) {
       this.rol = navigation.extras.state['rol'];
       console.log('Rol recibido:', this.rol);
 
-    }
-    if (navigation?.extras?.state) {
+      // Obtener la solicitud pasada como estado de la navegación
       const solicitud = navigation.extras.state['solicitud'];
       if (solicitud) {
+        // Rellenar el formulario con los datos de la solicitud
         this.solicitudForm.patchValue({
           id: solicitud.id,
           monto_total: solicitud.monto_total,
           nombre_usuario: solicitud.nombre_usuario,
+          nombre_repartidor: solicitud.nombre_repartidor || 'Sin asignar',
+          distribuidora: solicitud.distribuidora || 'No asignada',
+          patente: solicitud.patente || 'No registrada',
           direccion_entrega: solicitud.direccion,
           metodo_pago: solicitud.metodo_pago,
           hora_ini: solicitud.hora_ini,
           numtelefonico: solicitud.numtelefonico,
           detalle_solicitud: solicitud.detalle_pedido,
+          latitude: solicitud.latitude,
+          longitude: solicitud.longitude, 
+          latitude_r: null,
+          longitude_r: null, 
         });
       }
     }
   }
 
   // Crear pedido cuando el usuario hace click en "Aceptar"
-async crearPedido() {
-  if (!this.solicitudForm.valid) {
-    const alert = await this.alertController.create({
-      header: 'Error',
-      message: 'Por favor, complete todos los campos requeridos antes de continuar.',
-      buttons: ['OK'],
-    });
-    await alert.present();
-    return;
+  async crearPedido() {
+    if (!this.solicitudForm.valid) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Por favor, complete todos los campos requeridos antes de continuar.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+      return;
+    }
+
+    // Crear el objeto del nuevo pedido, omitiendo el campo 'id'
+    const nuevoPedido = {
+      nombre_usuario: this.solicitudForm.get('nombre_usuario')?.value,
+      nombre_repartidor: 'Sin asignar',
+      distribuidora: 'Carlos_admin',
+      patente: 'No registrada',
+      monto_total: this.solicitudForm.get('monto_total')?.value,
+      detalle_pedido: this.solicitudForm.get('detalle_solicitud')?.value,
+      metodo_pago: this.solicitudForm.get('metodo_pago')?.value,
+      direccion: this.solicitudForm.get('direccion_entrega')?.value,
+      hora_ini: this.solicitudForm.get('hora_ini')?.value,
+      num_telefonico: this.solicitudForm.get('numtelefonico')?.value,
+      estado: 'Espera',
+      latitude: this.solicitudForm.get('latitude')?.value,
+      longitude:this.solicitudForm.get('longitude')?.value,
+      latitude_r: 0,
+      longitude_r: 0
+    };
+
+    console.log('Enviando pedido:', nuevoPedido);
+
+    try {
+      // Usar subscribe() para enviar el pedido al backend
+      this.pedidoService.crearPedido(nuevoPedido).subscribe({
+        next: async (pedido) => {
+          const alert = await this.alertController.create({
+            header: 'Éxito',
+            message: 'El pedido fue creado correctamente.',
+            buttons: ['OK'],
+          });
+          await alert.present();
+
+          // Actualizar el estado de la solicitud a "aceptado"
+          const solicitudId = this.solicitudForm.get('id')?.value;
+          if (solicitudId) {
+            await this.solicitudService.actualizarEstadoSolicitud(solicitudId, 'Aceptado').toPromise();
+          }
+        },
+        error: async (error) => {
+          console.error('Error al crear el pedido:', error);
+
+          const mensajeError = error?.error?.message || error?.message || 'Ocurrió un error al crear el pedido. Intente nuevamente.';
+
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: mensajeError,
+            buttons: ['OK'],
+          });
+          await alert.present();
+        },
+      });
+    } catch (error) {
+      console.error('Error al crear el pedido:', error);
+
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Ocurrió un error al procesar la solicitud. Intente nuevamente.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    }
   }
-
-  // Crear el objeto del nuevo pedido, omitiendo el campo 'id'
-  const nuevoPedido = {
-    nombre_usuario: this.solicitudForm.get('nombre_usuario')?.value,
-    nombre_repartidor:'Sin asignar',
-    distribuidora: 'Carlos_admin',
-    patente: 'No registrada',
-    monto_total: this.solicitudForm.get('monto_total')?.value,
-    detalle_pedido: this.solicitudForm.get('detalle_solicitud')?.value,
-    metodo_pago: this.solicitudForm.get('metodo_pago')?.value,
-    direccion: this.solicitudForm.get('direccion_entrega')?.value,
-    hora_ini: this.solicitudForm.get('hora_ini')?.value,
-    num_telefonico: this.solicitudForm.get('numtelefonico')?.value,
-    estado: 'Espera', // Estado inicial del pedido
-  };
-
-  console.log('Enviando pedido:', nuevoPedido);
-
-  try {
-    // Usando subscribe() para enviar el pedido al backend
-    this.pedidoService.crearPedido(nuevoPedido).subscribe({
-      next: async (pedido) => {
-        const alert = await this.alertController.create({
-          header: 'Éxito',
-          message: 'El pedido fue creado correctamente.',
-          buttons: ['OK'],
-        });
-        await alert.present();
-
-        // Actualizar el estado de la solicitud a "aceptado"
-        const solicitudId = this.solicitudForm.get('id')?.value;
-        if (solicitudId) {
-          await this.solicitudService.actualizarEstadoSolicitud(solicitudId, 'Aceptado').toPromise();
-        }
-      },
-      error: async (error) => {
-        console.error('Error al crear el pedido:', error);
-
-        const mensajeError = error?.error?.message || error?.message || 'Ocurrió un error al crear el pedido. Intente nuevamente.';
-
-        const alert = await this.alertController.create({
-          header: 'Error',
-          message: mensajeError,
-          buttons: ['OK'],
-        });
-        await alert.present();
-      },
-    });
-  } catch (error) {
-    console.error('Error al crear el pedido:', error);
-
-    const alert = await this.alertController.create({
-      header: 'Error',
-      buttons: ['OK'],
-    });
-    await alert.present();
-  }
-}
-
 
   // Rechazar la solicitud
-  CancelarSolicitud() {
+  async CancelarSolicitud() {
     const solicitudId = this.solicitudForm.get('id')?.value; 
     if (solicitudId) {
       this.solicitudService

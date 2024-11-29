@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { PedidoService } from 'src/app/api/services/pedido/pedido.service';
 import { UserService } from 'src/app/api/services/user/user.service';
+import { BuscarUsuarioService } from 'src/app/api/services/buscar_usuario/buscar-usuario.service'; // Importar servicio BuscarUsuario
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,13 +16,17 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
   pedidoForm: FormGroup;
   rol: string | null = null;
   private isMapInitialized: boolean = false; // Bandera para verificar si el mapa está inicializado
-  private userLocationSubscription!: Subscription;
 
   private initialLocation: google.maps.LatLngLiteral = { lat: -33.4691, lng: -71.5771 }; // Default (Viña del Mar)
 
-  // Definir el mapa y el marcador como propiedades de la clase
+  // Definir el mapa y los marcadores como propiedades de la clase
   private map!: google.maps.Map;
-  private marker!: google.maps.Marker;
+  private deliveryMarker!: google.maps.Marker; // Marcador para la entrega
+  private driverMarker!: google.maps.Marker; // Marcador para el repartidor
+
+  // Variables de usuario
+  id: string | null = null;
+  username: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +34,8 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
     private formBuilder: FormBuilder,
     private pedidoService: PedidoService,
     private userService: UserService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private buscarUsuarioService: BuscarUsuarioService // Inyectar servicio para obtener usuario
   ) {
     this.pedidoForm = this.formBuilder.group({
       id: [''],
@@ -42,16 +48,25 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
       detalle_pedido: [''],
       nombre_repartidor: [''],
       patente: [''],
+      latitude: [''],
+      longitude:[''],
+      latitude_r: [''],
+      longitude_r:['']
     });
   }
 
   ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras?.state) {
-      this.rol = navigation.extras.state['rol'];
+    // Obtener el usuario actual desde el servicio 'BuscarUsuarioService'
+    const usuario = this.buscarUsuarioService.getUser();
+
+    if (usuario) {
+      this.id = usuario.id;
+      this.username = usuario.username;
+      this.rol = usuario.rol || 'No definido'; // Asignar rol
       console.log('Rol recibido:', this.rol);
     }
 
+    const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
       const pedido = navigation.extras.state['pedido'];
       if (pedido) {
@@ -66,13 +81,19 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
           nombre_repartidor: pedido.nombre_repartidor,
           metodo_pago: pedido.metodo_pago,
           patente: pedido.patente,
+          latitude: pedido.latitude,
+          longitude: pedido.longitude,
+          latitude_r: pedido.latitude_r,
+          longitude_r: pedido.longitude_r
         });
 
         // Actualizamos la ubicación inicial usando latitud y longitud del pedido
-        const latitud = pedido.latitud; // Asumimos que el pedido tiene latitud
-        const longitud = pedido.longitud; // Asumimos que el pedido tiene longitud
+        const latitud = pedido.latitude; // Coordenada de la entrega
+        const longitud = pedido.longitude; // Coordenada de la entrega
         if (latitud && longitud) {
           this.initialLocation = { lat: latitud, lng: longitud };
+        } else {
+          console.error('Las coordenadas del punto de entrega no están disponibles.');
         }
       }
     }
@@ -80,10 +101,11 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.initMap(); // Inicializamos el mapa cuando el componente está listo
-    this.startLocationPolling(); // Iniciar la actualización de la ubicación del repartidor
   }
 
   private initMap(): void {
+    console.log('Inicializando mapa con coordenadas:', this.initialLocation);
+
     const mapOptions: google.maps.MapOptions = {
       center: this.initialLocation,
       zoom: 18,
@@ -92,55 +114,76 @@ export class BoletaPage implements OnInit, AfterViewInit, OnDestroy {
 
     const mapElement = document.getElementById('map') as HTMLElement;
     if (mapElement) {
-      this.map = new google.maps.Map(mapElement, mapOptions); // Asignamos el mapa a la propiedad
-      this.marker = new google.maps.Marker({ // Asignamos el marcador a la propiedad
+      this.map = new google.maps.Map(mapElement, mapOptions);
+    }
+
+    // Marcador para el punto de entrega
+    if (this.initialLocation.lat && this.initialLocation.lng) {
+      this.deliveryMarker = new google.maps.Marker({
         position: this.initialLocation,
         map: this.map,
+        title: 'Punto de Entrega',
+        icon: {
+          url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+        },
       });
+    } else {
+      console.error('Las coordenadas del punto de entrega no son válidas.');
     }
+
+    // Marcador para el repartidor (inicialmente en una posición predeterminada)
+    const initialDriverLocation = {
+      lat: parseFloat(this.pedidoForm.get('latitude_r')?.value || '0'),
+      lng: parseFloat(this.pedidoForm.get('longitude_r')?.value || '0'),
+    };
+
+    this.driverMarker = new google.maps.Marker({
+      position: initialDriverLocation,
+      map: this.map,
+      title: 'Repartidor',
+      icon: {
+        url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+      },
+    });
 
     this.isMapInitialized = true;
+
+    // Iniciar el movimiento del repartidor
+    this.moveDriverMarkerToDeliveryPoint(initialDriverLocation, this.initialLocation);
   }
 
-  private showUserLocation(repartidorId: string): void {
-    if (!this.isMapInitialized) {
-      console.error('El mapa no está inicializado.');
-      return;
-    }
+  private moveDriverMarkerToDeliveryPoint(driverLocation: google.maps.LatLngLiteral, deliveryLocation: google.maps.LatLngLiteral): void {
+    const distance = google.maps.geometry.spherical.computeDistanceBetween(
+      new google.maps.LatLng(driverLocation.lat, driverLocation.lng),
+      new google.maps.LatLng(deliveryLocation.lat, deliveryLocation.lng)
+    );
 
-    // Suscripción para obtener el usuario
-    this.userLocationSubscription = this.userService.getUserById(repartidorId).subscribe(user => {
-      if (user && user.latitude && user.longitude) {
-        const repartidorLocation: google.maps.LatLngLiteral = {
-          lat: user.latitude,
-          lng: user.longitude,
-        };
-        this.updateMarker(repartidorLocation); // Mostramos la ubicación del repartidor en el mapa
+    const stepCount = 100; // Definir el número de pasos
+    const stepDelay = 100; // Tiempo entre cada paso (en milisegundos)
+    let step = 0;
+    
+    // Llamar a esta función cada cierto intervalo para mover al repartidor
+    const moveInterval = setInterval(() => {
+      if (step < stepCount) {
+        const latStep = (deliveryLocation.lat - driverLocation.lat) / stepCount;
+        const lngStep = (deliveryLocation.lng - driverLocation.lng) / stepCount;
+
+        // Actualizar la posición del repartidor
+        const newLat = driverLocation.lat + latStep;
+        const newLng = driverLocation.lng + lngStep;
+        const newLocation = { lat: newLat, lng: newLng };
+
+        this.driverMarker.setPosition(newLocation); // Actualizar la posición del marcador
+
+        step++;
       } else {
-        console.error('No se encontró el repartidor o la ubicación.');
+        clearInterval(moveInterval); // Detener el movimiento cuando se llega al destino
       }
-    });
-  }
-
-  private updateMarker(location: google.maps.LatLngLiteral): void {
-    if (this.isMapInitialized) {
-      // Actualizamos la ubicación del marcador
-      this.marker.setPosition(location);
-      this.map.setCenter(location);
-    }
-  }
-
-  private startLocationPolling(): void {
-    setInterval(() => {
-      const repartidorId = '2'; // Usamos un ID de repartidor de ejemplo
-      this.showUserLocation(repartidorId);
-    }, 5000); // Actualiza la ubicación cada 5 segundos
+    }, stepDelay);
   }
 
   ngOnDestroy(): void {
-    if (this.userLocationSubscription) {
-      this.userLocationSubscription.unsubscribe();
-    }
+    // No es necesario realizar nada específico para la eliminación, ya que eliminamos el polling.
   }
 
   actualizarPedido1() {

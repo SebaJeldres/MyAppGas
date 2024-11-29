@@ -9,4 +9,6 @@ export interface crearSolicitud {
     hora_ini: Date;
     estado_soli: string;
     monto_total: number;
+    latitude?: number; // Coordenada de latitud
+    longitude?: number;
 }

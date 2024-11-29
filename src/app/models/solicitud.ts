@@ -8,5 +8,7 @@ export interface solicitud{
     hora_ini: Date;
     estado_soli: string;
     monto_total: number;
+    latitude?: number; 
+    longitude?: number;
 
 }

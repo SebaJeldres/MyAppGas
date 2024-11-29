@@ -11,6 +11,10 @@ export interface Pedido {
     direccion: string;
     num_telefonico: string;
     hora_ini: Date;
-    estado: string; // Estado con las opciones específicas
+    estado: string;
+    latitude: number;
+    longitude: number;
+    latitude_r: number;
+    longitude_r: number; 
   }
   

@@ -4,6 +4,7 @@ import { SolicitudService } from 'src/app/api/services/solicitud/solicitud.servi
 import { PedidoService } from 'src/app/api/services/pedido/pedido.service'; // Asegúrate de importar el servicio de pedidos
 import { solicitud } from 'src/app/models/solicitud';
 import { Pedido } from 'src/app/models/pedido';
+import { BuscarUsuarioService } from 'src/app/api/services/buscar_usuario/buscar-usuario.service'; // Importa el servicio para obtener datos del usuario
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,7 @@ export class HomePage implements OnInit {
   pedidosEnCamino: Pedido[] = []
   pedidosEnEspera: Pedido[] = [];
     
+  // Inicializamos las variables de usuario
   id: string | null = null;
   username: string | null = null;
   rol: string | null = null;
@@ -27,27 +29,32 @@ export class HomePage implements OnInit {
   constructor(
     private router: Router,
     private SolicitudService: SolicitudService,
-    private PedidoService: PedidoService  // Inyectar el servicio de pedidos
+    private PedidoService: PedidoService,  // Inyectar el servicio de pedidos
+    private buscarUsuarioService: BuscarUsuarioService // Inyectar el servicio de usuario
   ) {}
 
   ngOnInit() {
-    // Recuperar el estado de la navegación
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras?.state) {
-      this.id = navigation.extras.state['id'];
-      this.username = navigation.extras.state['x'];
-      this.rol = navigation.extras.state['rol'] || 'No definido';
-      this.Nombre = navigation.extras.state['nombre'] || '';
-      this.apellido = navigation.extras.state['apellido'] || '';
-      this.Correo = navigation.extras.state['correo'] || '';
-      this.NumTelefonico = navigation.extras.state['numTelefonico'] || '';
-      this.Direccion = navigation.extras.state['Direccion'] || '';
+    // Obtener el usuario actual desde el servicio 'BuscarUsuarioService'
+    const usuario = this.buscarUsuarioService.getUser();
+    
+    if (usuario) {
+      this.id = usuario.id;
+      this.username = usuario.username;
+      this.rol = usuario.rol || 'No definido';
+      this.Nombre = usuario.nombre || '';
+      this.apellido = usuario.apellido || '';
+      this.Correo = usuario.correo || '';
+      this.NumTelefonico = usuario.numTelefonico || '';
+      this.Direccion = usuario.direccion || '';
     }
+
+    // Obtener las solicitudes y pedidos
     this.obtenerSolicitudesEnEspera();
     this.obtenerPedidosEnEspera();
     this.obtenerPedidosEnCamino();
   }
-// Obtener las solicitudes del servicio filtrados por estado: espera (Get para rol usuario y distribuidora)
+
+  // Obtener las solicitudes del servicio filtrados por estado: espera (Get para rol usuario y distribuidora)
   obtenerSolicitudesEnEspera() {
     this.SolicitudService.obtener_solicitud().subscribe((response: any) => {
       this.solicitudesEnEspera = response.body.filter(
@@ -56,30 +63,30 @@ export class HomePage implements OnInit {
     });
   }
 
-// Obtener los pedidos filtrados por estado: espera (Get para repartidor)
-    obtenerPedidosEnEspera() {
-      this.PedidoService.obtener_pedido().subscribe((response: any) => {
-        this.pedidosEnEspera = response.body
+  // Obtener los pedidos filtrados por estado: espera (Get para repartidor)
+  obtenerPedidosEnEspera() {
+    this.PedidoService.obtener_pedido().subscribe((response: any) => {
+      this.pedidosEnEspera = response.body
         .filter((pedido: Pedido) => pedido.estado === 'Espera')
-          .map((pedido: Pedido) => ({
-            ...pedido,
-          }));
-      });
-    }
+        .map((pedido: Pedido) => ({
+          ...pedido,
+        }));
+    });
+  }
 
-// Obtener los pedidos filtrados por estado: En Camino (Get para todos los roles)
-    obtenerPedidosEnCamino() {
-      this.PedidoService.obtener_pedido().subscribe((response: any) => {
-        this.pedidosEnCamino = response.body
+  // Obtener los pedidos filtrados por estado: En Camino (Get para todos los roles)
+  obtenerPedidosEnCamino() {
+    this.PedidoService.obtener_pedido().subscribe((response: any) => {
+      this.pedidosEnCamino = response.body
         .filter((pedido: Pedido) => pedido.estado === 'Camino')
-           .map((pedido: Pedido) => ({
-             ...pedido,
-           }));
-           console.log('Pedidos filtrados (En Camino):', this.pedidosEnCamino);
-        });
-    }
+        .map((pedido: Pedido) => ({
+          ...pedido,
+        }));
+      console.log('Pedidos filtrados (En Camino):', this.pedidosEnCamino);
+    });
+  }
 
-// Método para navegar a la página de perfil de usuario
+  // Método para navegar a la página de perfil de usuario
   irAPerfilUser() {
     this.router.navigate(['cuenta-usuario'], {
       state: {
@@ -143,20 +150,20 @@ export class HomePage implements OnInit {
 
   irADetalleSolicitud(solicitud: any) {
     this.router.navigate(['detalle-soli'], {
-      state: { solicitud, id: this.id, rol: this.rol}, // Enviamos toda la información de la solicitud
+      state: { solicitud, id: this.id, rol: this.rol }, // Enviamos toda la información de la solicitud
     });
   }
 
   // Id a Repartidor
   irADetallePedido(pedido: any) {
     this.router.navigate(['detalle-pedido'], {
-      state: { pedido, id: this.id, rol: this.rol, nombre_user: this.username}, // Enviamos toda la información de la solicitud
+      state: { pedido, id: this.id, rol: this.rol, nombre_user: this.username }, // Enviamos toda la información del pedido
     });
   }
 
   irABoleta(pedido: any) {
     this.router.navigate(['boleta'], {
-      state: { pedido, id: this.id,rol: this.rol }, // Enviamos toda la información de la solicitud
+      state: { pedido, id: this.id, rol: this.rol }, // Enviamos toda la información de la boleta
     });
   }
 

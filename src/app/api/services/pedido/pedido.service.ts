@@ -42,15 +42,16 @@ export class PedidoService {
     );
   }
     // Método para actualizar un pedido existente
-actualizarPedido(id: string, cambios: { patente: string; estado: string }): Observable<Pedido> {
-  return this.apiService.patch<Pedido>(`pedido?id=eq.${id}`, cambios).pipe(
-    map((response: HttpResponse<Pedido>) => response.body as Pedido),
-    catchError((error) => {
-      console.error('Error al actualizar el pedido:', error);
-      return throwError(() => new Error('Error al actualizar el pedido.'));
-    })
-  );
-}
+    actualizarPedido(id: string, cambios: { patente: string; nombre_repartidor: string; estado: string; latitude_r?: number; longitude_r?: number }): Observable<Pedido> {
+      return this.apiService.patch<Pedido>(`pedido?id=eq.${id}`, cambios).pipe(
+        map((response: HttpResponse<Pedido>) => response.body as Pedido),
+        catchError((error) => {
+          console.error('Error al actualizar el pedido:', error);
+          return throwError(() => new Error('Error al actualizar el pedido.'));
+        })
+      );
+    }
+    
 
 actualizarPedido1(id: string, cambios: { estado: string }): Observable<Pedido> {
   return this.apiService.patch<Pedido>(`pedido?id=eq.${id}`, cambios).pipe(

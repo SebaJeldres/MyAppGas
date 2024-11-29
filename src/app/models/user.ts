@@ -3,11 +3,11 @@ export interface user{
     username: string;
     password: string;
     rol: string;
-    Nombre: string;
+    nombre: string;
     apellido: string;
     Correo: string;
-    NumTelefonico: string;
-    Direccion: string;
+    num_telefonico: string;
+    direccion: string;
     latitude?: number; // Coordenada de latitud
     longitude?: number; // Coordenada de longitud
 
